@@ -24,11 +24,148 @@ options{
 	language=Python3;
 }
 
-// TODO: Define grammar rules here
+// ---------------------------- //
+//         PARSER RULES         //
+// ---------------------------- //
 program: EOF;
 
-WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs
 
-ERROR_CHAR: .;
-ILLEGAL_ESCAPE:.;
-UNCLOSE_STRING:.;
+
+
+// ---------------------------- //
+//         LEXER RULES          //
+// ---------------------------- //
+
+// KEYWORDS ----------------------
+DEFAULT : 'default' ;
+AUTO : 'auto' ;
+INT : 'int' ;
+FLOAT : 'float' ;
+STRING : 'string' ;
+VOID : 'void' ;
+STRUCT : 'struct' ;
+
+IF : 'if' ;
+ELSE : 'else' ;
+SWITCH : 'switch' ;
+CASE : 'case' ;
+
+FOR : 'for';
+WHILE : 'while' ;
+BREAK : 'break' ;
+CONTINUE : 'continue' ;
+
+RETURN : 'return' ;
+
+
+
+// OPERATORS ---------------------
+ADD : '+' ;
+SUB : '-' ;
+MUL : '*' ;
+DIV : '/' ;
+MOD : '%' ;
+
+EQUAL : '==' ;
+NOT_EQUAL : '!=' ;
+EQUAL_LESS : '<=' ;
+EQUAL_GRAT : '>=' ;
+LESS : '<' ;
+GRAT : '>' ;
+
+AND : '&&' ;
+OR : '||' ;
+NOT : '!' ;
+
+INCREMENT : '++' ;
+DECREMENT : '--' ;
+
+ASSIGN : '=' ;
+ACCESS : '.' ;
+
+
+
+// SEPARATORS --------------------
+LP : '(' ;
+RP : ')' ;
+LSB : '[' ;
+RSB : ']' ;
+LB : '{' ;
+RB : '}' ;
+
+SEMICOLON : ';' ;
+COMMA : ',' ;
+COLON : ':' ;
+
+
+
+// IDENTIFIER --------------------
+ID: [a-zA-Z_][a-zA-Z0-9_]* ;
+
+
+   
+// LITERALS ----------------------
+fragment DIGIT : [0-9] ;
+fragment EXPONENT : [eE] [+-]? DIGIT+ ; 
+
+FLOAT_LITERAL: '-'? (
+    DIGIT+ '.' DIGIT? EXPONENT? |
+    '.' DIGIT+ EXPONENT? |
+    DIGIT+ EXPONENT
+) ;
+
+INTEGER_LITERAL : '-'? DIGIT+ ;
+
+
+
+// STRING_LITERAL ----------------
+fragment ESCAPE_CHAR : [bfrnt"\\] ;
+fragment VALID_ESCAPE : '\\' ESCAPE_CHAR ;
+fragment INVALID_ESCAPE : '\\' ~[bfrnt"\\\r\n] ;
+
+ILLEGAL_ESCAPE : '"' 
+(
+    VALID_ESCAPE
+    | ~["\\\r\n]
+)*  
+    INVALID_ESCAPE 
+{ 
+    setText(getText().substring(1));            #error text = content without opening quote
+} ;           
+
+UNCLOSE_STRING : '"' 
+(
+    VALID_ESCAPE
+    | ~["\\\r\n]
+)*  
+    ( '\r' | '\n' | EOF )
+{
+    setText(getText().substring(1));
+} ;
+
+STRING_LITERAL : '"' 
+(
+    VALID_ESCAPE
+    | ~["\\\r\n]      
+)*  
+    '"'
+{       
+    setText(getText().substring(1, getText().length() - 1));            #strip surrounding quotes
+} ;
+
+
+
+// COMMENTS ----------------------
+LINE_COMMENT : '//' ~[\r\n]* -> skip ;
+BLOCK_COMMENT : '/*' .*? '*/' -> skip ;
+
+
+
+// OTHERS ------------------------
+// ILLEGAL_ESCAPE:.
+// UNCLOSE_STRING:.
+
+WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs
+ERROR_CHAR: . ; 
+
+

@@ -277,7 +277,15 @@ class TyCBuilder:
         # Create virtual environment
         print(self.colors.yellow("Creating virtual environment..."))
         if not self.venv_dir.exists():
-            self.run_command([python_cmd, "-m", "venv", str(self.venv_dir)])
+            # If python_cmd contains a space (e.g., "py -3.12"), split into tokens
+            if isinstance(python_cmd, str) and " " in python_cmd:
+                python_cmd_list = python_cmd.split()
+            elif isinstance(python_cmd, str):
+                python_cmd_list = [python_cmd]
+            else:
+                python_cmd_list = list(python_cmd)
+
+            self.run_command(python_cmd_list + ["-m", "venv", str(self.venv_dir)])
             print(self.colors.green(f"Virtual environment created at {self.venv_dir}"))
         else:
             print(
@@ -301,11 +309,12 @@ class TyCBuilder:
 
         # Upgrade pip
         print(self.colors.yellow("Upgrading pip in virtual environment..."))
-        self.run_command([str(self.venv_pip), "install", "--upgrade", "pip"])
+        # Use the venv's python to run pip to avoid replace-in-use issues on Windows
+        self.run_command([str(self.venv_python3), "-m", "pip", "install", "--upgrade", "pip"])
 
         # Install dependencies
         print(self.colors.yellow("Installing Python dependencies..."))
-        self.run_command([str(self.venv_pip), "install", "-r", "requirements.txt"])
+        self.run_command([str(self.venv_python3), "-m", "pip", "install", "-r", "requirements.txt"])
 
         print(self.colors.green("Setup completed!"))
 
