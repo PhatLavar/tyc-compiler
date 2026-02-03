@@ -109,7 +109,7 @@ fragment DIGIT : [0-9] ;
 fragment EXPONENT : [eE] [+-]? DIGIT+ ; 
 
 FLOAT_LITERAL: '-'? (
-    DIGIT+ '.' DIGIT? EXPONENT? |
+    DIGIT+ '.' DIGIT* EXPONENT? |
     '.' DIGIT+ EXPONENT? |
     DIGIT+ EXPONENT
 ) ;
@@ -130,7 +130,7 @@ ILLEGAL_ESCAPE : '"'
 )*  
     INVALID_ESCAPE 
 { 
-    setText(getText().substring(1));            #error text = content without opening quote
+    self.text = self.text[1:]            #error text = content without opening quote
 } ;           
 
 UNCLOSE_STRING : '"' 
@@ -140,7 +140,7 @@ UNCLOSE_STRING : '"'
 )*  
     ( '\r' | '\n' | EOF )
 {
-    setText(getText().substring(1));
+    self.text = self.text[1:]
 } ;
 
 STRING_LITERAL : '"' 
@@ -150,7 +150,7 @@ STRING_LITERAL : '"'
 )*  
     '"'
 {       
-    setText(getText().substring(1, getText().length() - 1));            #strip surrounding quotes
+    self.text = self.text[1:-1]            #strip surrounding quotes
 } ;
 
 
@@ -162,9 +162,6 @@ BLOCK_COMMENT : '/*' .*? '*/' -> skip ;
 
 
 // OTHERS ------------------------
-// ILLEGAL_ESCAPE:.
-// UNCLOSE_STRING:.
-
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs
 ERROR_CHAR: . ; 
 
