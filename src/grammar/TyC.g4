@@ -7,7 +7,7 @@ from lexererr import *
 @lexer::members {
 def emit(self):
     tk = self.type
-    if tk == self.UNCLOSE_STRING:       
+    if tk == self.UNCLOSE_STRING or tk == self.UNCLOSE_STRING2:      
         result = super().emit();
         raise UncloseString(result.text);
     elif tk == self.ILLEGAL_ESCAPE:
@@ -27,7 +27,101 @@ options{
 // ---------------------------- //
 //         PARSER RULES         //
 // ---------------------------- //
-program: EOF;
+
+// PROGRAM -----------------------
+program : (structDecl | funcDecl)* EOF ;
+
+
+
+// TYPES ------------------------
+type : INT | FLOAT | STRING | ID ;
+
+
+
+// DECLARATION -------------------
+structDecl : STRUCT ID LB structMember* RB SEMICOLON ;
+structMember : type ID SEMICOLON ;
+
+funcDecl : returnType? ID LP paramList? RP block ;
+paramList : param (COMMA param)* ;
+param : type ID ;
+returnType : VOID | type ;
+
+
+
+// STATEMENT ---------------------
+statement 
+    : varDecl
+    | exprStmt
+    | ifStmt
+    | whileStmt
+    | forStmt
+    | switchStmt
+    | block
+    | returnStmt
+    | breakStmt
+    | continueStmt
+    ;
+
+varDecl
+    : AUTO ID (ASSIGN expr)? SEMICOLON
+    | type ID (ASSIGN expr | ASSIGN struct_lit)? SEMICOLON
+    ;
+struct_lit : LB (expr (COMMA expr)*)? RB ;
+
+exprStmt : expr SEMICOLON ;
+block : LB statement* RB ;
+
+ifStmt : IF LP expr RP statement (ELSE statement)? ;
+whileStmt : WHILE LP expr RP statement ;
+
+forStmt : FOR LP forInit? SEMICOLON expr? SEMICOLON forUpdate? RP statement ;
+forInit : forVarDecl | expr ;
+forVarDecl 
+    : AUTO ID (ASSIGN expr)? 
+    | type ID (ASSIGN expr | ASSIGN struct_lit)?
+    ;
+
+forUpdate : expr ;
+
+switchStmt : SWITCH LP expr RP LB caseClause* defaultClause? RB ;
+caseClause : CASE expr COLON statement* ;
+defaultClause : DEFAULT COLON statement* ;
+
+returnStmt : RETURN expr? SEMICOLON ;
+breakStmt : BREAK SEMICOLON ;
+continueStmt : CONTINUE SEMICOLON ;
+
+
+
+// EXPRESSION --------------------
+expr : assignExpr ;
+assignExpr : lhs ASSIGN assignExpr | orExpr ;
+lhs : ID | primaryExpr ACCESS ID ;
+
+orExpr : andExpr (OR andExpr)* ;
+andExpr : equalExpr (AND equalExpr)* ;
+equalExpr : relationalExpr ((EQUAL | NOT_EQUAL) relationalExpr)* ;
+relationalExpr : addiExpr ((LESS | EQUAL_LESS | GRAT | EQUAL_GRAT ) addiExpr)* ;
+
+addiExpr : multiExpr ((ADD | SUB) multiExpr)* ;
+multiExpr : unaryExpr ((MUL | DIV | MOD) unaryExpr)* ;
+
+unaryExpr : (ADD | SUB | NOT | INCREMENT | DECREMENT) unaryExpr | postfixExpr ;
+postfixExpr : primaryExpr (INCREMENT | DECREMENT)* ;
+
+primaryExpr : atom (ACCESS ID)* ;
+atom
+    : literal
+    | ID
+    | funcCall
+    | '(' expr ')'
+    ;
+
+literal : INT_LIT | FLOAT_LIT | STRING_LIT ;
+funcCall : ID LP argList? RP ;
+argList : expr (COMMA expr)* ;
+
 
 
 
@@ -60,6 +154,9 @@ RETURN : 'return' ;
 
 
 // OPERATORS ---------------------
+INCREMENT : '++' ;
+DECREMENT : '--' ;
+
 ADD : '+' ;
 SUB : '-' ;
 MUL : '*' ;
@@ -76,9 +173,6 @@ GRAT : '>' ;
 AND : '&&' ;
 OR : '||' ;
 NOT : '!' ;
-
-INCREMENT : '++' ;
-DECREMENT : '--' ;
 
 ASSIGN : '=' ;
 ACCESS : '.' ;
@@ -108,13 +202,13 @@ ID: [a-zA-Z_][a-zA-Z0-9_]* ;
 fragment DIGIT : [0-9] ;
 fragment EXPONENT : [eE] [+-]? DIGIT+ ; 
 
-FLOAT_LITERAL: '-'? (
+FLOAT_LIT: (
     DIGIT+ '.' DIGIT* EXPONENT? |
     '.' DIGIT+ EXPONENT? |
     DIGIT+ EXPONENT
 ) ;
 
-INTEGER_LITERAL : '-'? DIGIT+ ;
+INT_LIT : DIGIT+ ;
 
 
 
@@ -133,6 +227,17 @@ ILLEGAL_ESCAPE : '"'
     self.text = self.text[1:]            #error text = content without opening quote
 } ;           
 
+// Unclosed string when backslash is immediately followed by newline or EOF
+UNCLOSE_STRING2 : '"' 
+(
+    VALID_ESCAPE
+    | ~["\\\r\n]
+)*  
+    '\\' ( '\r' | '\n' | EOF )
+{
+    self.text = self.text[1:]
+} ;
+
 UNCLOSE_STRING : '"' 
 (
     VALID_ESCAPE
@@ -143,7 +248,7 @@ UNCLOSE_STRING : '"'
     self.text = self.text[1:]
 } ;
 
-STRING_LITERAL : '"' 
+STRING_LIT : '"' 
 (
     VALID_ESCAPE
     | ~["\\\r\n]      
@@ -162,7 +267,7 @@ BLOCK_COMMENT : '/*' .*? '*/' -> skip ;
 
 
 // OTHERS ------------------------
-WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs
+WS : [ \t\r\n\f]+ -> skip ; // skip spaces, tabs
 ERROR_CHAR: . ; 
 
 
