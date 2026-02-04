@@ -75,14 +75,18 @@ block : LB statement* RB ;
 ifStmt : IF LP expr RP statement (ELSE statement)? ;
 whileStmt : WHILE LP expr RP statement ;
 
-forStmt : FOR LP forInit? SEMICOLON expr? SEMICOLON forUpdate? RP statement ;
+forStmt : FOR LP forInit? SEMICOLON forCond? SEMICOLON forUpdate? RP statement ;
 forInit : forVarDecl | expr ;
+forCond : expr ;
 forVarDecl 
     : AUTO ID (ASSIGN expr)? 
     | type ID (ASSIGN expr | ASSIGN struct_lit)?
     ;
 
-forUpdate : expr ;
+forUpdate : lhs ASSIGN assignExpr | inc_dec ;
+inc_dec 
+    : (INCREMENT | DECREMENT) ID 
+    | ID (INCREMENT | DECREMENT) ;
 
 switchStmt : SWITCH LP expr RP LB caseClause* defaultClause? RB ;
 caseClause : CASE expr COLON statement* ;
@@ -107,8 +111,18 @@ relationalExpr : addiExpr ((LESS | EQUAL_LESS | GRAT | EQUAL_GRAT ) addiExpr)* ;
 addiExpr : multiExpr ((ADD | SUB) multiExpr)* ;
 multiExpr : unaryExpr ((MUL | DIV | MOD) unaryExpr)* ;
 
-unaryExpr : (ADD | SUB | NOT | INCREMENT | DECREMENT) unaryExpr | postfixExpr ;
-postfixExpr : primaryExpr (INCREMENT | DECREMENT)* ;
+unaryExpr 
+    : (ADD | SUB | NOT) unaryExpr 
+    | (INCREMENT | DECREMENT) lhs
+    | postfixExpr 
+    ;
+
+postfixExpr 
+    : lhs postfixIncDec
+    | primaryExpr
+    ;
+
+postfixIncDec : (INCREMENT | DECREMENT)+ ;
 
 primaryExpr : atom (ACCESS ID)* ;
 atom
