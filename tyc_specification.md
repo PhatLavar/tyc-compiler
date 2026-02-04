@@ -44,7 +44,7 @@ Where:
 - `<return_type>` is a type which is described in Section 4, or can be omitted for inferred return type
 - `<identifier>` is the function name
 - `<parameter_list>` is a comma-separated list of parameter declarations (or empty)
-- `<statement_list>` is a sequence of statements
+- `<statement_list>` is a (possibly empty) sequence of statements, as defined in [Statements](#statements)
 
 A parameter declaration has the form:
 
@@ -53,8 +53,6 @@ A parameter declaration has the form:
 ```
 
 where `<identifier>` is the parameter name and `<type>` must be an explicit type (`int`, `float`, `string`, or a struct type name). **Note:** Parameters cannot use `auto` for type inference - the type must be explicitly declared.
-
-The `<statement_list>` will be described in [Statements](#statements).
 
 **Function Overloading:** TyC does not support function overloading. In a TyC program, function names must be unique - there cannot be two functions with the same name, regardless of their parameter types or return types. This restriction simplifies type inference, as the type of a function call can be determined solely by the function name without needing to consider multiple function signatures with different parameter types.
 
@@ -371,6 +369,8 @@ printInt(p.x);      // use member x in expression
 p.x++;              // increment member x (parsed as (p.x)++)
 ```
 
+If a function returns a struct, its result can be used in member access: `getPoint().x` is valid when `getPoint()` returns a struct type with member `x`.
+
 #### Struct Operations
 
 - **Assignment**: Struct values can be assigned using `=`. Assignment copies all member values.
@@ -566,6 +566,8 @@ Every operand of an operator must be evaluated before any part of the operation 
 
 A statement, which does not return anything (except return statement), indicates the action a program performs. There are many kinds of statements, as described as follows. Note that a semicolon (`;`) by itself does not constitute a valid statement; it must be part of a complete statement such as an expression statement, variable declaration, or other statement types.
 
+**Statement list:** A `<statement_list>` is a (possibly empty) sequence of statements. This applies wherever a statement list appears: in a function body, in a block, or within each `case` or `default` of a switch statement. An empty statement list (e.g. `{ }`) is valid.
+
 ### Variable Declaration Statement
 
 A **variable declaration** declares a variable. The initialization expression is optional:
@@ -716,7 +718,7 @@ Where:
 - Each `case` label must be followed by a colon (`:`)
 - The `default` clause is **optional** and can appear anywhere within the switch statement. **At most one `default` clause is allowed** - if multiple `default` clauses are present, it is a compile-time error.
 - The switch body can be empty (no case statements and no default clause): `switch (x) { }`
-- `<statement_list>` within each case or default can be empty or contain one or more statements
+- `<statement_list>` within each case or default is as defined in [Statements](#statements) (possibly empty)
 - Like C, **TyC switch statements have fall-through behavior** - execution continues to the next case unless a `break` statement is used
 
 **Important:** In TyC, switch statements follow C-style fall-through behavior. Execution will fall through to subsequent cases unless explicitly terminated with a `break` statement. You can use multiple case labels for the same code block to handle multiple values.
