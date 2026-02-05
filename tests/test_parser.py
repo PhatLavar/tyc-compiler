@@ -419,7 +419,7 @@ def test_068():
     """Decrement literal"""
     source = "void main() { --1; }"
     # Parser currently reports the unexpected token at the following position
-    assert Parser(source).parse() == "Error on line 1 col 17: ;"
+    assert Parser(source).parse() == "Error on line 1 col 16: 1"
 
 def test_069():
     """Call literal as function"""

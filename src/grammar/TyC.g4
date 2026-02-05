@@ -85,10 +85,11 @@ forVarDecl
 
 forUpdate : lhs ASSIGN assignExpr | inc_dec ;
 inc_dec 
-    : (INCREMENT | DECREMENT) ID 
-    | ID (INCREMENT | DECREMENT) ;
+    : (INCREMENT | DECREMENT) lhs
+    | lhs (INCREMENT | DECREMENT)
+    ;
 
-switchStmt : SWITCH LP expr RP LB caseClause* defaultClause? RB ;
+switchStmt : SWITCH LP expr RP LB caseClause* defaultClause? caseClause* RB ;
 caseClause : CASE expr COLON statement* ;
 defaultClause : DEFAULT COLON statement* ;
 
@@ -101,10 +102,12 @@ continueStmt : CONTINUE SEMICOLON ;
 // EXPRESSION --------------------
 expr : assignExpr ;
 assignExpr : lhs ASSIGN assignExpr | orExpr ;
-lhs : ID | primaryExpr ACCESS ID ;
+
+lhs : ID (ACCESS ID)* ;
 
 orExpr : andExpr (OR andExpr)* ;
 andExpr : equalExpr (AND equalExpr)* ;
+
 equalExpr : relationalExpr ((EQUAL | NOT_EQUAL) relationalExpr)* ;
 relationalExpr : addiExpr ((LESS | EQUAL_LESS | GRAT | EQUAL_GRAT ) addiExpr)* ;
 
@@ -113,15 +116,15 @@ multiExpr : unaryExpr ((MUL | DIV | MOD) unaryExpr)* ;
 
 unaryExpr 
     : (ADD | SUB | NOT) unaryExpr 
-    | (INCREMENT | DECREMENT) lhs
+    | (INCREMENT | DECREMENT) fixTarget
     | postfixExpr 
     ;
 
-postfixExpr 
-    : lhs postfixIncDec
-    | primaryExpr
+postfixExpr
+    : fixTarget postfixIncDec?         
+    | primaryExpr                          
     ;
-
+fixTarget : lhs | LP lhs RP ;
 postfixIncDec : (INCREMENT | DECREMENT)+ ;
 
 primaryExpr : atom (ACCESS ID)* ;
@@ -129,7 +132,7 @@ atom
     : literal
     | ID
     | funcCall
-    | '(' expr ')'
+    | LP expr RP
     ;
 
 literal : INT_LIT | FLOAT_LIT | STRING_LIT ;
@@ -196,8 +199,6 @@ ACCESS : '.' ;
 // SEPARATORS --------------------
 LP : '(' ;
 RP : ')' ;
-LSB : '[' ;
-RSB : ']' ;
 LB : '{' ;
 RB : '}' ;
 
@@ -282,6 +283,4 @@ BLOCK_COMMENT : '/*' .*? '*/' -> skip ;
 
 // OTHERS ------------------------
 WS : [ \t\r\n\f]+ -> skip ; // skip spaces, tabs
-ERROR_CHAR: . ; 
-
-
+ERROR_CHAR: . ;
