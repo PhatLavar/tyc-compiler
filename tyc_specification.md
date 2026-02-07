@@ -26,7 +26,7 @@ Despite its simplicity, TyC includes most important features of a procedural pro
 
 ## Program Structure
 
-As its simplicity, a TyC compiler does not support compiling many files, so a TyC program is written in just one file only. A TyC program consists of a sequence of struct declarations and function declarations.
+As its simplicity, a TyC compiler does not support compiling many files, so a TyC program is written in just one file only. A TyC program consists of a (possibly empty) sequence of struct declarations and function declarations.
 
 The entry point of a TyC program is a function named `main` that takes no parameters and returns `void`. Each such function in a TyC program is an entry point of the program.
 
@@ -543,7 +543,7 @@ The order of precedence for operators is listed from highest to lowest:
 | **Operator** | **Associativity** |
 |--------------|-------------------|
 | `.` (member access) | left |
-| `++`, `--` (postfix) | left |
+| `++`, `--` (postfix), `()` (function call) | left |
 | `++`, `--` (prefix) | right |
 | `!`, `-` (unary), `+` (unary) | right |
 | `*`, `/`, `%` | left |
@@ -1236,7 +1236,7 @@ void main() {
 
 ## Grammar Summary
 
-A TyC program consists of a sequence of struct declarations and function declarations.
+A TyC program consists of a (possibly empty) sequence of struct declarations and function declarations.
 
 **Struct Declarations:**
 - Each struct declaration defines a new composite type with named members
