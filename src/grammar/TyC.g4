@@ -118,13 +118,12 @@ multiExpr : unaryExpr ((MUL | DIV | MOD) unaryExpr)* ;
 
 unaryExpr 
     : (ADD | SUB | NOT) unaryExpr 
-    | (INCREMENT | DECREMENT) lhs
+    | (INCREMENT | DECREMENT) unaryExpr
     | postfixExpr 
     ;
 
 postfixExpr
-    : lhs postfixIncDec?         
-    | primaryExpr                          
+    : primaryExpr postfixIncDec?
     ;
 postfixIncDec : (INCREMENT | DECREMENT)+ ;
 

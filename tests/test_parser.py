@@ -412,14 +412,14 @@ def test_parser_066():
 def test_parser_067():
     """Increment literal"""
     source = "void main() { 1++; }"
-    # Parser should report the unexpected '++' token at its position
-    assert Parser(source).parse() == "Error on line 1 col 15: ++"
+    # Parser accepts the syntax; semantic analysis validates if it's a valid lvalue
+    assert Parser(source).parse() == "success"
 
 def test_parser_068():
     """Decrement literal"""
     source = "void main() { --1; }"
-    # Parser currently reports the unexpected token at the following position
-    assert Parser(source).parse() == "Error on line 1 col 16: 1"
+    # Parser accepts the syntax; semantic analysis validates if it's a valid lvalue
+    assert Parser(source).parse() == "success"
 
 def test_parser_069():
     """Call literal as function"""
