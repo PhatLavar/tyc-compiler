@@ -220,7 +220,7 @@ fragment DIGIT : [0-9] ;
 fragment EXPONENT : [eE] [+-]? DIGIT+ ; 
 
 FLOAT_LIT: (
-    DIGIT+ '.' DIGIT* {self.text.count('.') == 1}? EXPONENT? |
+    DIGIT+ '.' DIGIT* EXPONENT? |
     '.' DIGIT+ EXPONENT? |
     DIGIT+ EXPONENT
 ) ;
