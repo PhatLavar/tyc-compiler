@@ -5,517 +5,525 @@ TODO: Implement 100 test cases for lexer
 
 import pytest
 from tests.utils import Tokenizer
-from build.lexererr import ErrorToken, IllegalEscape, UncloseString
-
-def assert_tokens(src: str, expected: str) -> None:
-    result = Tokenizer(src).get_tokens_as_string()
-    assert result == expected
-
-def assert_lexer_error(src: str, error_cls, expected: str) -> None:
-    msg = Tokenizer(src).get_tokens_as_string()
-    msg = msg.split(",")[-1] if "," in msg else msg
-
-    if error_cls.__name__ == "ErrorToken":
-        msg = msg.replace("Error Token ", "", 1)
-    elif error_cls.__name__ == "UncloseString":
-        msg = msg.replace("Unclosed String: ", "", 1)
-    elif error_cls.__name__ == "IllegalEscape":
-        msg = msg.replace("Illegal Escape In String: ", "", 1)
-
-    assert msg == expected
 
 
 # ==========================================
 # 1. OPERATORS & MAXIMAL MUNCTIONS (15)
 # ==========================================
 def test_lexer_001():
-    source = "a---b"
-    expected = "a,--,-,b,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: a---b"""
+    tokenizer = Tokenizer("a---b")
+    assert tokenizer.get_tokens_as_string() == "a,--,-,b,<EOF>"
 
 def test_lexer_002():
-    source = "a++++b"
-    expected = "a,++,++,b,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: a++++b"""
+    tokenizer = Tokenizer("a++++b")
+    assert tokenizer.get_tokens_as_string() == "a,++,++,b,<EOF>"
 
 def test_lexer_003():
-    source = "x<=<y"
-    expected = "x,<=,<,y,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: x<=<y"""
+    tokenizer = Tokenizer("x<=<y")
+    assert tokenizer.get_tokens_as_string() == "x,<=,<,y,<EOF>"
 
 def test_lexer_004():
-    source = "x>>>=y"
-    expected = "x,>,>,>=,y,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: x>>>=y"""
+    tokenizer = Tokenizer("x>>>=y")
+    assert tokenizer.get_tokens_as_string() == "x,>,>,>=,y,<EOF>"
 
 def test_lexer_005():
-    source = "!!x"
-    expected = "!,!,x,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: !!x"""
+    tokenizer = Tokenizer("!!x")
+    assert tokenizer.get_tokens_as_string() == "!,!,x,<EOF>"
 
 def test_lexer_006():
-    source = "!===x"
-    expected = "!=,==,x,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: !===x"""
+    tokenizer = Tokenizer("!===x")
+    assert tokenizer.get_tokens_as_string() == "!=,==,x,<EOF>"
 
 def test_lexer_007():
-    source = "a=b==c"
-    expected = "a,=,b,==,c,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: a=b==c"""
+    tokenizer = Tokenizer("a=b==c")
+    assert tokenizer.get_tokens_as_string() == "a,=,b,==,c,<EOF>"
 
 def test_lexer_008():
-    source = "a=b!=c"
-    expected = "a,=,b,!=,c,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: a=b!=c"""
+    tokenizer = Tokenizer("a=b!=c")
+    assert tokenizer.get_tokens_as_string() == "a,=,b,!=,c,<EOF>"
 
 def test_lexer_009():
-    source = "a&&&b"
-    assert_lexer_error(source, ErrorToken, "&")
+    """Error: a&&&b"""
+    tokenizer = Tokenizer("a&&&b")
+    assert tokenizer.get_tokens_as_string() == "a,&&,Error Token &"
 
 def test_lexer_010():
-    source = "a|||b"
-    assert_lexer_error(source, ErrorToken, "|")
+    """Error: a|||b"""
+    tokenizer = Tokenizer("a|||b")
+    assert tokenizer.get_tokens_as_string() == "a,||,Error Token |"
 
 def test_lexer_011():
-    source = "++--x"
-    expected = "++,--,x,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: ++--x"""
+    tokenizer = Tokenizer("++--x")
+    assert tokenizer.get_tokens_as_string() == "++,--,x,<EOF>"
 
 def test_lexer_012():
-    source = "x--++"
-    expected = "x,--,++,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: x--++"""
+    tokenizer = Tokenizer("x--++")
+    assert tokenizer.get_tokens_as_string() == "x,--,++,<EOF>"
 
 def test_lexer_013():
-    source = "+-+-x"
-    expected = "+,-,+,-,x,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: +-+-x"""
+    tokenizer = Tokenizer("+-+-x")
+    assert tokenizer.get_tokens_as_string() == "+,-,+,-,x,<EOF>"
 
 def test_lexer_014():
-    source = "x=--+y"
-    expected = "x,=,--,+,y,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: x=--+y"""
+    tokenizer = Tokenizer("x=--+y")
+    assert tokenizer.get_tokens_as_string() == "x,=,--,+,y,<EOF>"
 
 def test_lexer_015():
-    source = "x=+++y"
-    expected = "x,=,++,+,y,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: x=+++y"""
+    tokenizer = Tokenizer("x=+++y")
+    assert tokenizer.get_tokens_as_string() == "x,=,++,+,y,<EOF>"
+
 
 
 # ==========================================
 # 2. NUMBERS & NUMERIC EDGE CASES (15)
 # ==========================================
 def test_lexer_016():
-    source = "1e+"
-    expected = "1,e,+,<EOF>"
-    assert_tokens(source, expected)
+    """Number: 1e+"""
+    tokenizer = Tokenizer("1e+")
+    assert tokenizer.get_tokens_as_string() == "1,e,+,<EOF>"
 
 def test_lexer_017():
-    source = "1e-"
-    expected = "1,e,-,<EOF>"
-    assert_tokens(source, expected)
+    """Number: 1e-"""
+    tokenizer = Tokenizer("1e-")
+    assert tokenizer.get_tokens_as_string() == "1,e,-,<EOF>"
 
 def test_lexer_018():
-    source = ".e1"
-    expected = ".,e1,<EOF>"
-    assert_tokens(source, expected)
+    """Number: .e1"""
+    tokenizer = Tokenizer(".e1")
+    assert tokenizer.get_tokens_as_string() == ".,e1,<EOF>"
 
 def test_lexer_019():
-    source = "0..1"
-    expected = "0.,.1,<EOF>"
-    assert_tokens(source, expected)
+    """Number: 0..1"""
+    tokenizer = Tokenizer("0..1")
+    assert tokenizer.get_tokens_as_string() == "0.,.1,<EOF>"
 
 def test_lexer_020():
-    source = "1.2.3"
-    expected = "1.2,.3,<EOF>"
-    assert_tokens(source, expected)
+    """Number: 1.2.3"""
+    tokenizer = Tokenizer("1.2.3")
+    assert tokenizer.get_tokens_as_string() == "1.2,.3,<EOF>"
 
 def test_lexer_021():
-    source = "9e--2"
-    expected = "9,e,--,2,<EOF>"
-    assert_tokens(source, expected)
+    """Number: 9e--2"""
+    tokenizer = Tokenizer("9e--2")
+    assert tokenizer.get_tokens_as_string() == "9,e,--,2,<EOF>"
 
 def test_lexer_022():
-    source = "9e++2"
-    expected = "9,e,++,2,<EOF>"
-    assert_tokens(source, expected)
+    """Number: 9e++2"""
+    tokenizer = Tokenizer("9e++2")
+    assert tokenizer.get_tokens_as_string() == "9,e,++,2,<EOF>"
 
 def test_lexer_023():
-    source = "007.08"
-    expected = "007.08,<EOF>"
-    assert_tokens(source, expected)
+    """Number: leading zeros"""
+    tokenizer = Tokenizer("007.08")
+    assert tokenizer.get_tokens_as_string() == "007.08,<EOF>"
 
 def test_lexer_024():
-    source = ".5.6"
-    expected = ".5,.6,<EOF>"
-    assert_tokens(source, expected)
+    """Number: .5.6"""
+    tokenizer = Tokenizer(".5.6")
+    assert tokenizer.get_tokens_as_string() == ".5,.6,<EOF>"
 
 def test_lexer_025():
-    source = "10e2.5"
-    expected = "10e2,.5,<EOF>"
-    assert_tokens(source, expected)
+    """Number: 10e2.5"""
+    tokenizer = Tokenizer("10e2.5")
+    assert tokenizer.get_tokens_as_string() == "10e2,.5,<EOF>"
 
 def test_lexer_026():
-    source = "1e2e3"
-    expected = "1e2,e3,<EOF>"
-    assert_tokens(source, expected)
+    """Number: 1e2e3"""
+    tokenizer = Tokenizer("1e2e3")
+    assert tokenizer.get_tokens_as_string() == "1e2,e3,<EOF>"
 
 def test_lexer_027():
-    source = "0e"
-    expected = "0,e,<EOF>"
-    assert_tokens(source, expected)
+    """Number: 0e"""
+    tokenizer = Tokenizer("0e")
+    assert tokenizer.get_tokens_as_string() == "0,e,<EOF>"
 
 def test_lexer_028():
-    source = "0e+1"
-    expected = "0e+1,<EOF>"
-    assert_tokens(source, expected)
+    """Number: 0e+1"""
+    tokenizer = Tokenizer("0e+1")
+    assert tokenizer.get_tokens_as_string() == "0e+1,<EOF>"
 
 def test_lexer_029():
-    source = "."
-    expected = ".,<EOF>"
-    assert_tokens(source, expected)
+    """Number: single dot"""
+    tokenizer = Tokenizer(".")
+    assert tokenizer.get_tokens_as_string() == ".,<EOF>"
 
 def test_lexer_030():
-    source = "1."
-    expected = "1.,<EOF>"
-    assert_tokens(source, expected)
+    """Number: trailing dot"""
+    tokenizer = Tokenizer("1.")
+    assert tokenizer.get_tokens_as_string() == "1.,<EOF>"
+
 
 
 # ==========================================
 # 3. STRINGS & ESCAPE HANDLING (20)
 # ==========================================
 def test_lexer_031():
-    source = "\"\\\\\""
-    expected = "\\\\,<EOF>"
-    assert_tokens(source, expected)
+    """String: \\\\"""
+    tokenizer = Tokenizer("\"\\\\\"")
+    assert tokenizer.get_tokens_as_string() == "\\\\,<EOF>"
 
 def test_lexer_032():
-    source = "\"\\n\\t\""
-    expected = "\\n\\t,<EOF>"
-    assert_tokens(source, expected)
+    """String: \\n \\t"""
+    tokenizer = Tokenizer("\"\\n\\t\"")
+    assert tokenizer.get_tokens_as_string() == "\\n\\t,<EOF>"
 
 def test_lexer_033():
-    source = "\"\\\"\""
-    expected = "\\\",<EOF>"
-    assert_tokens(source, expected)
+    """String: escaped quote"""
+    tokenizer = Tokenizer("\"\\\"\"")
+    assert tokenizer.get_tokens_as_string() == "\\\",<EOF>"
 
 def test_lexer_034():
-    source = "\"a\\\\b\""
-    expected = "a\\\\b,<EOF>"
-    assert_tokens(source, expected)
+    """String: a\\\\b"""
+    tokenizer = Tokenizer("\"a\\\\b\"")
+    assert tokenizer.get_tokens_as_string() == "a\\\\b,<EOF>"
 
 def test_lexer_035():
-    source = "\"bad\\x\""
-    assert_lexer_error(source, IllegalEscape, "bad\\x")
+    """Illegal escape: \\x"""
+    tokenizer = Tokenizer("\"bad\\x\"")
+    assert tokenizer.get_tokens_as_string() == "Illegal Escape In String: bad\\x"
 
 def test_lexer_036():
-    source = "\"bad\\q\""
-    assert_lexer_error(source, IllegalEscape, "bad\\q")
+    """Illegal escape: \\q"""
+    tokenizer = Tokenizer("\"bad\\q\"")
+    assert tokenizer.get_tokens_as_string() == "Illegal Escape In String: bad\\q"
 
 def test_lexer_037():
-    source = "\"bad\\\n\""
-    assert_lexer_error(source, UncloseString, "bad\\\n")
+    """Unclosed string with escaped newline"""
+    tokenizer = Tokenizer("\"bad\\\n\"")
+    assert tokenizer.get_tokens_as_string() == "Unclosed String: bad\\\n"
 
 def test_lexer_038():
-    source = "\"unclosed"
-    assert_lexer_error(source, UncloseString, "unclosed")
+    """Unclosed string: EOF"""
+    tokenizer = Tokenizer("\"unclosed")
+    assert tokenizer.get_tokens_as_string() == "Unclosed String: unclosed"
 
 def test_lexer_039():
-    source = "\"line\nbreak\""
-    assert_lexer_error(source, UncloseString, "line\n")
+    """Unclosed string: newline"""
+    tokenizer = Tokenizer("\"line\nbreak\"")
+    assert tokenizer.get_tokens_as_string() == "Unclosed String: line\n"
 
 def test_lexer_040():
-    source = "\"\\\""
-    assert_lexer_error(source, UncloseString, "\\\"")
+    """Unclosed string: escaped quote"""
+    tokenizer = Tokenizer("\"\\\"")
+    assert tokenizer.get_tokens_as_string() == "Unclosed String: \\\""
 
 def test_lexer_041():
-    source = "\"ok\"\"bad"
-    assert_lexer_error(source, UncloseString, "bad")
+    """String followed by unclosed string"""
+    tokenizer = Tokenizer("\"ok\"\"bad")
+    assert tokenizer.get_tokens_as_string() == "ok,Unclosed String: bad"
 
 def test_lexer_042():
-    source = "\"\"\""
-    assert_lexer_error(source, UncloseString, "")
+    """Triple quote unclosed"""
+    tokenizer = Tokenizer("\"\"\"")
+    assert tokenizer.get_tokens_as_string() == ",Unclosed String: "
 
 def test_lexer_043():
-    source = "\"a\"\"b\""
-    expected = "a,b,<EOF>"
-    assert_tokens(source, expected)
+    """Two valid strings"""
+    tokenizer = Tokenizer("\"a\"\"b\"")
+    assert tokenizer.get_tokens_as_string() == "a,b,<EOF>"
 
 def test_lexer_044():
-    source = "\"//not comment\""
-    expected = "//not comment,<EOF>"
-    assert_tokens(source, expected)
+    """String containing //"""
+    tokenizer = Tokenizer("\"//not comment\"")
+    assert tokenizer.get_tokens_as_string() == "//not comment,<EOF>"
 
 def test_lexer_045():
-    source = "\"/*not comment*/\""
-    expected = "/*not comment*/,<EOF>"
-    assert_tokens(source, expected)
+    """String containing /* */"""
+    tokenizer = Tokenizer("\"/*not comment*/\"")
+    assert tokenizer.get_tokens_as_string() == "/*not comment*/,<EOF>"
 
 def test_lexer_046():
-    source = "\"\\b\\f\\r\""
-    expected = "\\b\\f\\r,<EOF>"
-    assert_tokens(source, expected)
+    """String: \\b \\f \\r"""
+    tokenizer = Tokenizer("\"\\b\\f\\r\"")
+    assert tokenizer.get_tokens_as_string() == "\\b\\f\\r,<EOF>"
 
 def test_lexer_047():
-    source = "\"a\\tb\""
-    expected = "a\\tb,<EOF>"
-    assert_tokens(source, expected)
+    """String with tab"""
+    tokenizer = Tokenizer("\"a\\tb\"")
+    assert tokenizer.get_tokens_as_string() == "a\\tb,<EOF>"
 
 def test_lexer_048():
-    source = "\"bad\\z\""
-    assert_lexer_error(source, IllegalEscape, "bad\\z")
+    """Illegal escape: \\z"""
+    tokenizer = Tokenizer("\"bad\\z\"")
+    assert tokenizer.get_tokens_as_string() == "Illegal Escape In String: bad\\z"
 
 def test_lexer_049():
-    source = "\"a\\n"
-    assert_lexer_error(source, UncloseString, "a\\n")
+    """Unclosed string: \\n"""
+    tokenizer = Tokenizer("\"a\\n")
+    assert tokenizer.get_tokens_as_string() == "Unclosed String: a\\n"
 
 def test_lexer_050():
-    source = "\"\\\"\\\"\""
-    expected = "\\\"\\\",<EOF>"
-    assert_tokens(source, expected)
+    """String with escaped quotes"""
+    tokenizer = Tokenizer("\"\\\"\\\"\"")
+    assert tokenizer.get_tokens_as_string() == "\\\"\\\",<EOF>"
+
 
 
 # ======================================================
 # 4. COMMENTS, IDENTIFIERS, WHITESPACES, ERRORS (50)
 # =======================================================
 def test_lexer_051():
-    source = "/*/**/x"
-    expected = "x,<EOF>"
-    assert_tokens(source, expected)
+    """Nested block comment"""
+    tokenizer = Tokenizer("/*/**/x")
+    assert tokenizer.get_tokens_as_string() == "x,<EOF>"
 
 def test_lexer_052():
-    source = "//\n//\nx"
-    expected = "x,<EOF>"
-    assert_tokens(source, expected)
+    """Multiple line comments"""
+    tokenizer = Tokenizer("//\n//\nx")
+    assert tokenizer.get_tokens_as_string() == "x,<EOF>"
 
 def test_lexer_053():
-    source = "/* // */ x"
-    expected = "x,<EOF>"
-    assert_tokens(source, expected)
+    """Comment inside block"""
+    tokenizer = Tokenizer("/* // */ x")
+    assert tokenizer.get_tokens_as_string() == "x,<EOF>"
 
 def test_lexer_054():
-    source = "a/*b*/c/*d*/e"
-    expected = "a,c,e,<EOF>"
-    assert_tokens(source, expected)
+    """Multiple block comments"""
+    tokenizer = Tokenizer("a/*b*/c/*d*/e")
+    assert tokenizer.get_tokens_as_string() == "a,c,e,<EOF>"
 
 def test_lexer_055():
-    source = "ifelse"
-    expected = "ifelse,<EOF>"
-    assert_tokens(source, expected)
+    """Identifier: ifelse"""
+    tokenizer = Tokenizer("ifelse")
+    assert tokenizer.get_tokens_as_string() == "ifelse,<EOF>"
 
 def test_lexer_056():
-    source = "_if"
-    expected = "_if,<EOF>"
-    assert_tokens(source, expected)
+    """Identifier: _if"""
+    tokenizer = Tokenizer("_if")
+    assert tokenizer.get_tokens_as_string() == "_if,<EOF>"
 
 def test_lexer_057():
-    source = "while1"
-    expected = "while1,<EOF>"
-    assert_tokens(source, expected)
+    """Identifier: while1"""
+    tokenizer = Tokenizer("while1")
+    assert tokenizer.get_tokens_as_string() == "while1,<EOF>"
 
 def test_lexer_058():
-    source = "int intx"
-    expected = "int,intx,<EOF>"
-    assert_tokens(source, expected)
+    """Keyword vs identifier"""
+    tokenizer = Tokenizer("int intx")
+    assert tokenizer.get_tokens_as_string() == "int,intx,<EOF>"
 
 def test_lexer_059():
-    source = "a\b\t\nc"
-    assert_lexer_error(source, ErrorToken, "\b")
+    """Error: backspace"""
+    tokenizer = Tokenizer("a\b\t\nc")
+    assert tokenizer.get_tokens_as_string() == "a,Error Token \b"
 
 def test_lexer_060():
-    source = "x\r\f\ty"
-    expected = "x,y,<EOF>"
-    assert_tokens(source, expected)
+    """Whitespace handling"""
+    tokenizer = Tokenizer("x\r\f\ty")
+    assert tokenizer.get_tokens_as_string() == "x,y,<EOF>"
 
 def test_lexer_061():
-    source = "@"
-    assert_lexer_error(source, ErrorToken, "@")
+    """Error: @"""
+    tokenizer = Tokenizer("@")
+    assert tokenizer.get_tokens_as_string() == "Error Token @"
 
 def test_lexer_062():
-    source = "#"
-    assert_lexer_error(source, ErrorToken, "#")
+    """Error: #"""
+    tokenizer = Tokenizer("#")
+    assert tokenizer.get_tokens_as_string() == "Error Token #"
 
 def test_lexer_063():
-    source = "$"
-    assert_lexer_error(source, ErrorToken, "$")
+    """Error: $"""
+    tokenizer = Tokenizer("$")
+    assert tokenizer.get_tokens_as_string() == "Error Token $"
 
 def test_lexer_064():
-    source = "x=@"
-    assert_lexer_error(source, ErrorToken, "@")
+    """Error in expression"""
+    tokenizer = Tokenizer("x=@")
+    assert tokenizer.get_tokens_as_string() == "x,=,Error Token @"
 
 def test_lexer_065():
-    source = "x=1$"
-    assert_lexer_error(source, ErrorToken, "$")
+    """Error after number"""
+    tokenizer = Tokenizer("x=1$")
+    assert tokenizer.get_tokens_as_string() == "x,=,1,Error Token $"
 
 def test_lexer_066():
-    source = "/* unclosed"
-    expected = "/,*,unclosed,<EOF>"
-    assert_tokens(source, expected)
+    """Unclosed block comment treated as tokens"""
+    tokenizer = Tokenizer("/* unclosed")
+    assert tokenizer.get_tokens_as_string() == "/,*,unclosed,<EOF>"
 
 def test_lexer_067():
-    source = "x/***/y"
-    expected = "x,y,<EOF>"
-    assert_tokens(source, expected)
+    """Block comment with stars"""
+    tokenizer = Tokenizer("x/***/y")
+    assert tokenizer.get_tokens_as_string() == "x,y,<EOF>"
 
 def test_lexer_068():
-    source = "a/*/b*/c"
-    expected = "a,c,<EOF>"
-    assert_tokens(source, expected)
+    """Weird block comment"""
+    tokenizer = Tokenizer("a/*/b*/c")
+    assert tokenizer.get_tokens_as_string() == "a,c,<EOF>"
 
 def test_lexer_069():
-    source = "x=/*c*/1"
-    expected = "x,=,1,<EOF>"
-    assert_tokens(source, expected)
+    """Comment in assignment"""
+    tokenizer = Tokenizer("x=/*c*/1")
+    assert tokenizer.get_tokens_as_string() == "x,=,1,<EOF>"
 
 def test_lexer_070():
-    source = "x//comment"
-    expected = "x,<EOF>"
-    assert_tokens(source, expected)
+    """Line comment at end"""
+    tokenizer = Tokenizer("x//comment")
+    assert tokenizer.get_tokens_as_string() == "x,<EOF>"
 
 def test_lexer_071():
-    source = "x/*comment*/"
-    expected = "x,<EOF>"
-    assert_tokens(source, expected)
+    """Block comment at end"""
+    tokenizer = Tokenizer("x/*comment*/")
+    assert tokenizer.get_tokens_as_string() == "x,<EOF>"
 
 def test_lexer_072():
-    source = "\"\""
-    expected = ",<EOF>"
-    assert_tokens(source, expected)
+    """Empty string"""
+    tokenizer = Tokenizer("\"\"")
+    assert tokenizer.get_tokens_as_string() == ",<EOF>"
 
 def test_lexer_073():
-    source = "\" \""
-    expected = " ,<EOF>"
-    assert_tokens(source, expected)
+    """String with space"""
+    tokenizer = Tokenizer("\" \"")
+    assert tokenizer.get_tokens_as_string() == " ,<EOF>"
 
 def test_lexer_074():
-    source = "\"a b c\""
-    expected = "a b c,<EOF>"
-    assert_tokens(source, expected)
+    """String with spaces"""
+    tokenizer = Tokenizer("\"a b c\"")
+    assert tokenizer.get_tokens_as_string() == "a b c,<EOF>"
 
 def test_lexer_075():
-    source = "\"a/*b*/c\""
-    expected = "a/*b*/c,<EOF>"
-    assert_tokens(source, expected)
+    """String containing block comment"""
+    tokenizer = Tokenizer("\"a/*b*/c\"")
+    assert tokenizer.get_tokens_as_string() == "a/*b*/c,<EOF>"
 
 def test_lexer_076():
-    source = "\"a//b\""
-    expected = "a//b,<EOF>"
-    assert_tokens(source, expected)
+    """String containing line comment"""
+    tokenizer = Tokenizer("\"a//b\"")
+    assert tokenizer.get_tokens_as_string() == "a//b,<EOF>"
 
 def test_lexer_077():
-    source = "x=1/*c*/+2"
-    expected = "x,=,1,+,2,<EOF>"
-    assert_tokens(source, expected)
+    """Expression with block comment"""
+    tokenizer = Tokenizer("x=1/*c*/+2")
+    assert tokenizer.get_tokens_as_string() == "x,=,1,+,2,<EOF>"
 
 def test_lexer_078():
-    source = "x=1//c\n+2"
-    expected = "x,=,1,+,2,<EOF>"
-    assert_tokens(source, expected)
+    """Expression with line comment"""
+    tokenizer = Tokenizer("x=1//c\n+2")
+    assert tokenizer.get_tokens_as_string() == "x,=,1,+,2,<EOF>"
 
 def test_lexer_079():
-    source = "a+++b"
-    expected = "a,++,+,b,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: a+++b"""
+    tokenizer = Tokenizer("a+++b")
+    assert tokenizer.get_tokens_as_string() == "a,++,+,b,<EOF>"
 
 def test_lexer_080():
-    source = "a----b"
-    expected = "a,--,--,b,<EOF>"
-    assert_tokens(source, expected)
+    """Operators: a----b"""
+    tokenizer = Tokenizer("a----b")
+    assert tokenizer.get_tokens_as_string() == "a,--,--,b,<EOF>"
 
 def test_lexer_081():
-    source = "x=--y"
-    expected = "x,=,--,y,<EOF>"
-    assert_tokens(source, expected)
+    """Prefix operator"""
+    tokenizer = Tokenizer("x=--y")
+    assert tokenizer.get_tokens_as_string() == "x,=,--,y,<EOF>"
 
 def test_lexer_082():
-    source = "x=- -y"
-    expected = "x,=,-,-,y,<EOF>"
-    assert_tokens(source, expected)
+    """Separated minus"""
+    tokenizer = Tokenizer("x=- -y")
+    assert tokenizer.get_tokens_as_string() == "x,=,-,-,y,<EOF>"
 
 def test_lexer_083():
-    source = "x=+ +y"
-    expected = "x,=,+,+,y,<EOF>"
-    assert_tokens(source, expected)
+    """Separated plus"""
+    tokenizer = Tokenizer("x=+ +y")
+    assert tokenizer.get_tokens_as_string() == "x,=,+,+,y,<EOF>"
 
 def test_lexer_084():
-    source = "x=+-y"
-    expected = "x,=,+,-,y,<EOF>"
-    assert_tokens(source, expected)
+    """Mixed +-"""
+    tokenizer = Tokenizer("x=+-y")
+    assert tokenizer.get_tokens_as_string() == "x,=,+,-,y,<EOF>"
 
 def test_lexer_085():
-    source = "x=-+y"
-    expected = "x,=,-,+,y,<EOF>"
-    assert_tokens(source, expected)
+    """Mixed -+"""
+    tokenizer = Tokenizer("x=-+y")
+    assert tokenizer.get_tokens_as_string() == "x,=,-,+,y,<EOF>"
 
 def test_lexer_086():
-    source = "x=1e+2y"
-    expected = "x,=,1e+2,y,<EOF>"
-    assert_tokens(source, expected)
+    """Scientific with identifier"""
+    tokenizer = Tokenizer("x=1e+2y")
+    assert tokenizer.get_tokens_as_string() == "x,=,1e+2,y,<EOF>"
 
 def test_lexer_087():
-    source = "x=1e2+3"
-    expected = "x,=,1e2,+,3,<EOF>"
-    assert_tokens(source, expected)
+    """Scientific with addition"""
+    tokenizer = Tokenizer("x=1e2+3")
+    assert tokenizer.get_tokens_as_string() == "x,=,1e2,+,3,<EOF>"
 
 def test_lexer_088():
-    source = "x=.5+1"
-    expected = "x,=,.5,+,1,<EOF>"
-    assert_tokens(source, expected)
+    """Float starting with dot"""
+    tokenizer = Tokenizer("x=.5+1")
+    assert tokenizer.get_tokens_as_string() == "x,=,.5,+,1,<EOF>"
 
 def test_lexer_089():
-    source = "x=1.+.2"
-    expected = "x,=,1.,+,.2,<EOF>"
-    assert_tokens(source, expected)
+    """Float ending with dot"""
+    tokenizer = Tokenizer("x=1.+.2")
+    assert tokenizer.get_tokens_as_string() == "x,=,1.,+,.2,<EOF>"
 
 def test_lexer_090():
-    source = "x=1..2"
-    expected = "x,=,1.,.2,<EOF>"
-    assert_tokens(source, expected)
+    """Double dot"""
+    tokenizer = Tokenizer("x=1..2")
+    assert tokenizer.get_tokens_as_string() == "x,=,1.,.2,<EOF>"
 
 def test_lexer_091():
-    source = "\"bad\\u\""
-    assert_lexer_error(source, IllegalEscape, "bad\\u")
+    """Illegal escape: \\u"""
+    tokenizer = Tokenizer("\"bad\\u\"")
+    assert tokenizer.get_tokens_as_string() == "Illegal Escape In String: bad\\u"
 
 def test_lexer_092():
-    source = "\"bad\\9\""
-    assert_lexer_error(source, IllegalEscape, "bad\\9")
+    """Illegal escape: \\9"""
+    tokenizer = Tokenizer("\"bad\\9\"")
+    assert tokenizer.get_tokens_as_string() == "Illegal Escape In String: bad\\9"
 
 def test_lexer_093():
-    source = "\"bad\\\t\""
-    assert_lexer_error(source, IllegalEscape, "bad\\\t")
+    """Illegal escape with tab"""
+    tokenizer = Tokenizer("\"bad\\\t\"")
+    assert tokenizer.get_tokens_as_string() == "Illegal Escape In String: bad\\\t"
 
 def test_lexer_094():
-    source = "\"ok\" @"
-    assert_lexer_error(source, ErrorToken, "@")
+    """Error after string"""
+    tokenizer = Tokenizer("\"ok\" @")
+    assert tokenizer.get_tokens_as_string() == "ok,Error Token @"
 
 def test_lexer_095():
-    source = "\"ok\"$"
-    assert_lexer_error(source, ErrorToken, "$")
+    """Error after string"""
+    tokenizer = Tokenizer("\"ok\"$")
+    assert tokenizer.get_tokens_as_string() == "ok,Error Token $"
 
 def test_lexer_096():
-    source = "a={{{}}}"
-    expected = "a,=,{,{,{,},},},<EOF>"
-    assert_tokens(source, expected)
+    """Braces"""
+    tokenizer = Tokenizer("a={{{}}}")
+    assert tokenizer.get_tokens_as_string() == "a,=,{,{,{,},},},<EOF>"
 
 def test_lexer_097():
-    source = "(((x)))"
-    expected = "(,(,(,x,),),),<EOF>"
-    assert_tokens(source, expected)
+    """Parentheses"""
+    tokenizer = Tokenizer("(((x)))")
+    assert tokenizer.get_tokens_as_string() == "(,(,(,x,),),),<EOF>"
 
 def test_lexer_098():
-    source = "{(x)}"
-    expected = "{,(,x,),},<EOF>"
-    assert_tokens(source, expected)
+    """Mixed braces"""
+    tokenizer = Tokenizer("{(x)}")
+    assert tokenizer.get_tokens_as_string() == "{,(,x,),},<EOF>"
 
 def test_lexer_099():
-    source = "x.(y)"
-    expected = "x,.,(,y,),<EOF>"
-    assert_tokens(source, expected)
+    """Dot and parentheses"""
+    tokenizer = Tokenizer("x.(y)")
+    assert tokenizer.get_tokens_as_string() == "x,.,(,y,),<EOF>"
 
 def test_lexer_100():
-    source = "/*hdr*/x=1+2*(3-4);"
-    expected = "x,=,1,+,2,*,(,3,-,4,),;,<EOF>"
-    assert_tokens(source, expected)
+    """Full expression"""
+    tokenizer = Tokenizer("/*hdr*/x=1+2*(3-4);")
+    assert tokenizer.get_tokens_as_string() == "x,=,1,+,2,*,(,3,-,4,),;,<EOF>"
 
 
 
@@ -582,4 +590,3 @@ def test_complex_expression():
     tokenizer = Tokenizer("auto x = 5 + 3 * 2;")
     assert tokenizer.get_tokens_as_string() == "auto,x,=,5,+,3,*,2,;,<EOF>"
 '''
-

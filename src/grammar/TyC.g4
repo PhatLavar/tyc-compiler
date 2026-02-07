@@ -103,7 +103,9 @@ continueStmt : CONTINUE SEMICOLON ;
 expr : assignExpr ;
 assignExpr : lhs ASSIGN assignExpr | orExpr ;
 
-lhs : ID (ACCESS ID)* ;
+lhs : ID (ACCESS ID)* 
+    | LP lhs RP (ACCESS ID)* 
+    ;
 
 orExpr : andExpr (OR andExpr)* ;
 andExpr : equalExpr (AND equalExpr)* ;
@@ -116,15 +118,14 @@ multiExpr : unaryExpr ((MUL | DIV | MOD) unaryExpr)* ;
 
 unaryExpr 
     : (ADD | SUB | NOT) unaryExpr 
-    | (INCREMENT | DECREMENT) fixTarget
+    | (INCREMENT | DECREMENT) lhs
     | postfixExpr 
     ;
 
 postfixExpr
-    : fixTarget postfixIncDec?         
+    : lhs postfixIncDec?         
     | primaryExpr                          
     ;
-fixTarget : lhs | LP lhs RP ;
 postfixIncDec : (INCREMENT | DECREMENT)+ ;
 
 primaryExpr : atom (ACCESS ID)* ;
@@ -132,6 +133,7 @@ atom
     : literal
     | ID
     | funcCall
+    | struct_lit
     | LP expr RP
     ;
 
@@ -218,7 +220,7 @@ fragment DIGIT : [0-9] ;
 fragment EXPONENT : [eE] [+-]? DIGIT+ ; 
 
 FLOAT_LIT: (
-    DIGIT+ '.' DIGIT* EXPONENT? |
+    DIGIT+ '.' DIGIT* {self.text.count('.') == 1}? EXPONENT? |
     '.' DIGIT+ EXPONENT? |
     DIGIT+ EXPONENT
 ) ;
