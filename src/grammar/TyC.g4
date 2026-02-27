@@ -103,8 +103,9 @@ continueStmt : CONTINUE SEMICOLON ;
 expr : assignExpr ;
 assignExpr : lhs ASSIGN assignExpr | orExpr ;
 
-lhs : ID (ACCESS ID)* 
-    | LP lhs RP (ACCESS ID)* 
+lhs : ID (ACCESS ID)*
+    | funcCall (ACCESS ID)+
+    | LP lhs RP (ACCESS ID)*
     ;
 
 orExpr : andExpr (OR andExpr)* ;
@@ -125,13 +126,13 @@ unaryExpr
 postfixExpr
     : primaryExpr postfixIncDec?
     ;
-postfixIncDec : (INCREMENT | DECREMENT)+ ;
+postfixIncDec : (INCREMENT | DECREMENT) ;
 
 primaryExpr : atom (ACCESS ID)* ;
 atom
     : literal
-    | ID
     | funcCall
+    | ID
     | struct_lit
     | LP expr RP
     ;

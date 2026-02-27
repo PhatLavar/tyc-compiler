@@ -7,6 +7,30 @@ import pytest
 from tests.utils import Tokenizer
 
 
+def test_lexer_keywords_all():
+    """All TyC keywords"""
+    tokenizer = Tokenizer(
+        "int float string void auto struct if else for while do break continue return switch case default"
+    )
+    assert tokenizer.get_tokens_as_string() == \
+        "int,float,string,void,auto,struct,if,else,for,while,do,break,continue,return,switch,case,default,<EOF>"
+
+def test_lexer_keyword_case_sensitive():
+    tokenizer = Tokenizer("If ELSE While")
+    assert tokenizer.get_tokens_as_string() == "If,ELSE,While,<EOF>"
+
+def test_lexer_identifier_edge_cases():
+    tokenizer = Tokenizer("_ __ __x XyZ a_b_c")
+    assert tokenizer.get_tokens_as_string() == "_,__,__x,XyZ,a_b_c,<EOF>"
+
+def test_lexer_integer_group():
+    tokenizer = Tokenizer("5 123 007 5+10 -5")
+    assert tokenizer.get_tokens_as_string() == "5,123,007,5,+,10,-,5,<EOF>"
+
+def test_lexer_c_not_supported():
+    tokenizer = Tokenizer("+= -> :: ...")
+    assert tokenizer.get_tokens_as_string() == "+,=,-,>,:,:,.,.,.,<EOF>"
+
 # ==========================================
 # 1. OPERATORS & MAXIMAL MUNCTIONS (15)
 # ==========================================

@@ -705,6 +705,164 @@ void main() {
     # Lexer raises ErrorToken for invalid character
     assert Parser(source).parse() == "Error Token @"
 
+# Additional tests covering missing scenarios
+
+def test_parser_101():
+    """Empty struct declaration"""
+    source = "struct Empty {}; void main() {}"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_102():
+    """Struct containing another struct type"""
+    source = "struct B { int x; }; struct A { B b; }; void main() {}"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_103():
+    """Self-referencing struct (syntax only)"""
+    source = "struct Node { Node next; }; void main() {}"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_104():
+    """Struct member with auto (invalid)"""
+    source = "struct S { auto x; };"
+    assert Parser(source).parse() == "Error on line 1 col 11: auto"
+
+
+def test_parser_105():
+    """Struct member with initializer (invalid)"""
+    source = "struct S { int x = 0; };"
+    assert Parser(source).parse() == "Error on line 1 col 17: ="
+
+
+def test_parser_106():
+    """Function with parameters and explicit types"""
+    source = "int add(int a, float b) {}"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_107():
+    """Function with inferred return type"""
+    source = "foo() { return 1; }"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_108():
+    """Function returning and accepting struct types"""
+    source = "struct S { int x; }; S f(S s) {} void main() {}"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_109():
+    """Auto as return type (invalid)"""
+    source = "auto foo() {}"
+    assert Parser(source).parse() == "Error on line 1 col 0: auto"
+
+
+def test_parser_110():
+    """Auto as parameter type (invalid)"""
+    source = "void f(auto x) {}"
+    assert Parser(source).parse() == "Error on line 1 col 7: auto"
+
+
+def test_parser_111():
+    """Trailing comma in parameter list (invalid)"""
+    source = "void foo(int x, ) {}"
+    assert Parser(source).parse() == "Error on line 1 col 16: )"
+
+
+def test_parser_112():
+    """Prototype only (no body)"""
+    source = "void foo();"
+    assert Parser(source).parse() == "Error on line 1 col 10: ;"
+
+
+def test_parser_113():
+    """Global variable declaration is not allowed"""
+    source = "int x;"
+    assert Parser(source).parse() == "Error on line 1 col 5: ;"
+
+
+def test_parser_114():
+    """Struct variable with literal initializer"""
+    source = "struct P { int x; }; void main(){ P p = {1,2}; }"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_115():
+    """Nested struct literal initialization"""
+    source = "struct P { int x; }; struct Q { P p; int y; }; void main(){ Q q = {{1},2}; }"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_116():
+    """Auto variable initialized with struct literal"""
+    source = "struct P { int x; }; void main(){ auto q = {1}; }"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_117():
+    """Struct initialization with expressions"""
+    source = "struct P { int x; int y; }; void main(){ P p = {1+2, 3*4}; }"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_118():
+    """String operands allowed in arithmetic (syntax)"""
+    source = "void main(){ auto x = \"a\" + \"b\"; }"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_119():
+    """For loop with literal init (grammar allows but semantic later?)"""
+    source = "void main(){ for (3;1;) {} }"
+    # parser accepts it; semantic analyzer should reject later
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_120():
+    """Empty switch"""
+    source = "void main(){ switch (1) {} }"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_121():
+    """Single case with break"""
+    source = "void main(){ switch (1){ case 1: break; } }"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_122():
+    """Multiple cases with default"""
+    source = "void main(){ switch (1){ case 1: break; case 2: break; default: break; } }"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_123():
+    """Case with constant expression negative, positive"""
+    source = "void main(){ switch (1){ case -1: break; case +5: break; } }"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_124():
+    """Default only switch"""
+    source = "void main(){ switch (1){ default: break; } }"
+    assert Parser(source).parse() == "success"
+
+
+def test_parser_125():
+    """Error: case missing colon"""
+    source = "void main(){ switch (1){ case 1 break; } }"
+    assert Parser(source).parse() == "Error on line 1 col 32: break"
+
+
+def test_parser_126():
+    """Error: multiple default clauses"""
+    source = "void main(){ switch (1){ default: break; default: break; } }"
+    assert Parser(source).parse() == "Error on line 1 col 41: default"
+
 
 
 
