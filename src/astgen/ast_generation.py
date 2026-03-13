@@ -24,7 +24,7 @@ class ASTGeneration(TyCVisitor):
             child = ctx.getChild(i)
             if child.getRuleIndex() != -1:  # Ignore terminal nodes
                 result = self.visit(child)
-                if result:
+                if result is not None:
                     decls.append(result)
         return Program(decls)
 
@@ -265,8 +265,7 @@ class ASTGeneration(TyCVisitor):
 
     def visitLhs(self, ctx: TyCParser.LhsContext):
         """lhs : ID (ACCESS ID)* 
-              | LP lhs RP (ACCESS ID)*"""
-        # Handle both alternatives
+            | LP lhs RP (ACCESS ID)*"""
         ids = ctx.ID()
         if ids:
             # First alternative: ID (ACCESS ID)*
@@ -277,21 +276,34 @@ class ASTGeneration(TyCVisitor):
             for i in range(1, len(ids)):
                 member = ids[i].getText()
                 result = MemberAccess(result, member)
+            return result
         else:
             # Second alternative: LP lhs RP (ACCESS ID)*
-            result = self.visit(ctx.lhs())
+            # Get the lhs inside parentheses
+            result = self.visit(ctx.lhs(0))
             
             # Process member accesses after parentheses
-            for member_id in ids:
-                member = member_id.getText()
-                result = MemberAccess(result, member)
-        
-        return result
+            # The IDs after parentheses are all IDs in the context
+            all_ids = ctx.ID()  # This will get all IDs including the ones inside? No, ctx.ID() returns all IDs in the context
+            # We need to get the IDs after the parentheses
+            # Better approach: look for ACCESS tokens followed by IDs
+            for i in range(ctx.getChildCount()):
+                child = ctx.getChild(i)
+                if hasattr(child, 'getSymbol') and child.getSymbol().type == TyCParser.ACCESS:
+                    # The next child should be an ID
+                    if i + 1 < ctx.getChildCount():
+                        next_child = ctx.getChild(i + 1)
+                        if hasattr(next_child, 'getSymbol') and next_child.getSymbol().type == TyCParser.ID:
+                            member = next_child.getText()
+                            result = MemberAccess(result, member)
+            
+            return result
 
     def visitOrExpr(self, ctx: TyCParser.OrExprContext):
         """orExpr : andExpr (OR andExpr)*"""
         and_exprs = ctx.andExpr()
         result = self.visit(and_exprs[0])
+        
         for i in range(1, len(and_exprs)):
             right = self.visit(and_exprs[i])
             result = BinaryOp(result, "||", right)
@@ -301,9 +313,11 @@ class ASTGeneration(TyCVisitor):
         """andExpr : equalExpr (AND equalExpr)*"""
         equal_exprs = ctx.equalExpr()
         result = self.visit(equal_exprs[0])
+        
         for i in range(1, len(equal_exprs)):
             right = self.visit(equal_exprs[i])
             result = BinaryOp(result, "&&", right)
+        
         return result
 
     def visitEqualExpr(self, ctx: TyCParser.EqualExprContext):
@@ -311,20 +325,22 @@ class ASTGeneration(TyCVisitor):
         rel_exprs = ctx.relationalExpr()
         result = self.visit(rel_exprs[0])
         
+        # Get all operator tokens
+        operators = []
+        for i in range(ctx.getChildCount()):
+            child = ctx.getChild(i)
+            if hasattr(child, 'getSymbol'):
+                symbol_type = child.getSymbol().type
+                if symbol_type == TyCParser.EQUAL:
+                    operators.append("==")
+                elif symbol_type == TyCParser.NOT_EQUAL:
+                    operators.append("!=")
+        
         for i in range(1, len(rel_exprs)):
-            # Determine operator from text between operands
-            operator = "=="
-            # Look at tokens to find the operator
-            for j in range(ctx.getChildCount()):
-                child = ctx.getChild(j)
-                if hasattr(child, 'getSymbol'):
-                    sym = child.getSymbol()
-                    if sym.type == TyCParser.NOT_EQUAL:
-                        operator = "!="
-                    elif sym.type == TyCParser.EQUAL:
-                        operator = "=="
             right = self.visit(rel_exprs[i])
+            operator = operators[i-1]
             result = BinaryOp(result, operator, right)
+        
         return result
 
     def visitRelationalExpr(self, ctx: TyCParser.RelationalExprContext):
@@ -332,25 +348,26 @@ class ASTGeneration(TyCVisitor):
         addi_exprs = ctx.addiExpr()
         result = self.visit(addi_exprs[0])
         
+        # Get all operator tokens
+        operators = []
+        for i in range(ctx.getChildCount()):
+            child = ctx.getChild(i)
+            if hasattr(child, 'getSymbol'):
+                symbol_type = child.getSymbol().type
+                if symbol_type == TyCParser.LESS:
+                    operators.append("<")
+                elif symbol_type == TyCParser.EQUAL_LESS:
+                    operators.append("<=")
+                elif symbol_type == TyCParser.GRAT:
+                    operators.append(">")
+                elif symbol_type == TyCParser.EQUAL_GRAT:
+                    operators.append(">=")
+        
         for i in range(1, len(addi_exprs)):
             right = self.visit(addi_exprs[i])
-            
-            # Find operator - look at children between operands
-            operator = "<"  # default
-            for j in range(ctx.getChildCount()):
-                child = ctx.getChild(j)
-                if hasattr(child, 'getSymbol'):
-                    symbol_type = child.getSymbol().type
-                    if symbol_type == TyCParser.LESS:
-                        operator = "<"
-                    elif symbol_type == TyCParser.EQUAL_LESS:
-                        operator = "<="
-                    elif symbol_type == TyCParser.GRAT:
-                        operator = ">"
-                    elif symbol_type == TyCParser.EQUAL_GRAT:
-                        operator = ">="
-            
+            operator = operators[i-1]
             result = BinaryOp(result, operator, right)
+        
         return result
 
     def visitAddiExpr(self, ctx: TyCParser.AddiExprContext):
@@ -358,21 +375,23 @@ class ASTGeneration(TyCVisitor):
         multi_exprs = ctx.multiExpr()
         result = self.visit(multi_exprs[0])
         
+        # Get all operator tokens from the context
+        operators = []
+        for i in range(ctx.getChildCount()):
+            child = ctx.getChild(i)
+            if hasattr(child, 'getSymbol'):
+                symbol_type = child.getSymbol().type
+                if symbol_type == TyCParser.ADD:
+                    operators.append("+")
+                elif symbol_type == TyCParser.SUB:
+                    operators.append("-")
+        
+        # Use the operators in order
         for i in range(1, len(multi_exprs)):
             right = self.visit(multi_exprs[i])
-            
-            # Find operator
-            operator = "+"  # default
-            for j in range(ctx.getChildCount()):
-                child = ctx.getChild(j)
-                if hasattr(child, 'getSymbol'):
-                    symbol_type = child.getSymbol().type
-                    if symbol_type == TyCParser.ADD:
-                        operator = "+"
-                    elif symbol_type == TyCParser.SUB:
-                        operator = "-"
-            
+            operator = operators[i-1]  # Get the operator for this pair
             result = BinaryOp(result, operator, right)
+        
         return result
 
     def visitMultiExpr(self, ctx: TyCParser.MultiExprContext):
@@ -380,29 +399,30 @@ class ASTGeneration(TyCVisitor):
         unary_exprs = ctx.unaryExpr()
         result = self.visit(unary_exprs[0])
         
+        # Get all operator tokens
+        operators = []
+        for i in range(ctx.getChildCount()):
+            child = ctx.getChild(i)
+            if hasattr(child, 'getSymbol'):
+                symbol_type = child.getSymbol().type
+                if symbol_type == TyCParser.MUL:
+                    operators.append("*")
+                elif symbol_type == TyCParser.DIV:
+                    operators.append("/")
+                elif symbol_type == TyCParser.MOD:
+                    operators.append("%")
+        
         for i in range(1, len(unary_exprs)):
             right = self.visit(unary_exprs[i])
-            
-            # Find operator
-            operator = "*"  # default
-            for j in range(ctx.getChildCount()):
-                child = ctx.getChild(j)
-                if hasattr(child, 'getSymbol'):
-                    symbol_type = child.getSymbol().type
-                    if symbol_type == TyCParser.MUL:
-                        operator = "*"
-                    elif symbol_type == TyCParser.DIV:
-                        operator = "/"
-                    elif symbol_type == TyCParser.MOD:
-                        operator = "%"
-            
+            operator = operators[i-1]
             result = BinaryOp(result, operator, right)
+        
         return result
 
     def visitUnaryExpr(self, ctx: TyCParser.UnaryExprContext):
         """unaryExpr : (ADD | SUB | NOT) unaryExpr
-                     | (INCREMENT | DECREMENT) unaryExpr
-                     | postfixExpr"""
+                    | (INCREMENT | DECREMENT) unaryExpr
+                    | postfixExpr"""
         if ctx.ADD() or ctx.SUB() or ctx.NOT():
             op = ctx.getChild(0).getText()
             operand = self.visit(ctx.unaryExpr())
@@ -410,7 +430,7 @@ class ASTGeneration(TyCVisitor):
         elif ctx.INCREMENT() or ctx.DECREMENT():
             op = ctx.getChild(0).getText()
             operand = self.visit(ctx.unaryExpr())
-            return PrefixOp(op, operand)
+            return PrefixOp(op, operand)  # This is correct - both are prefix ops
         else:
             return self.visit(ctx.postfixExpr())
 
@@ -427,16 +447,19 @@ class ASTGeneration(TyCVisitor):
         result = self.visit(ctx.atom())
         
         # Process member accesses
-        id_count = 0
+        # Find all ACCESS tokens followed by IDs
         for i in range(ctx.getChildCount()):
             child = ctx.getChild(i)
             if hasattr(child, 'getSymbol') and child.getSymbol().type == TyCParser.ACCESS:
-                member = ctx.ID(id_count).getText()
-                result = MemberAccess(result, member)
-                id_count += 1
+                # The next child should be an ID
+                if i + 1 < ctx.getChildCount():
+                    next_child = ctx.getChild(i + 1)
+                    if hasattr(next_child, 'getSymbol') and next_child.getSymbol().type == TyCParser.ID:
+                        member = next_child.getText()
+                        result = MemberAccess(result, member)
         
         return result
-
+    
     def visitAtom(self, ctx: TyCParser.AtomContext):
         """atom : literal
                 | ID
@@ -483,14 +506,23 @@ class ASTGeneration(TyCVisitor):
 
     def visitInc_dec(self, ctx: TyCParser.Inc_decContext):
         """inc_dec : (INCREMENT | DECREMENT) lhs
-                   | lhs (INCREMENT | DECREMENT)"""
+                | lhs (INCREMENT | DECREMENT)"""
         if ctx.lhs():
             lhs = self.visit(ctx.lhs())
-            first_child = ctx.getChild(0).getText()
-            if first_child in ("++", "--"):
-                # Prefix
-                return PrefixOp(first_child, lhs)
-            else:
-                # Postfix
-                last_child = ctx.getChild(1).getText()
-                return PostfixOp(last_child, lhs)
+            # Check if first child is INCREMENT/DECREMENT (prefix) or last child is (postfix)
+            first_child = ctx.getChild(0)
+            last_child = ctx.getChild(ctx.getChildCount() - 1)
+            
+            if hasattr(first_child, 'getSymbol'):
+                first_type = first_child.getSymbol().type
+                if first_type in (TyCParser.INCREMENT, TyCParser.DECREMENT):
+                    # Prefix
+                    return PrefixOp(first_child.getText(), lhs)
+            
+            # Must be postfix
+            if hasattr(last_child, 'getSymbol'):
+                last_type = last_child.getSymbol().type
+                if last_type in (TyCParser.INCREMENT, TyCParser.DECREMENT):
+                    return PostfixOp(last_child.getText(), lhs)
+        
+        return None
