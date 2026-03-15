@@ -192,7 +192,12 @@ class TyCBuilder:
         )
         print(
             self.colors.yellow(
-                "  python3 run.py test-ast    - Run AST generation tests and generate reports"
+                "  python3 run.py test-ast      - Run AST generation tests and generate reports"
+            )
+        )
+        print(
+            self.colors.yellow(
+                "  python3 run.py test-checker - Run semantic checker tests (Assignment 3)"
             )
         )
         print()
@@ -502,6 +507,44 @@ class TyCBuilder:
         )
         self.clean_cache()
 
+    def test_checker(self):
+        """Run static semantic checker tests (Assignment 3)."""
+        if not self.build_dir.exists():
+            print(
+                self.colors.yellow("Build directory not found. Running build first...")
+            )
+            self.build_grammar()
+
+        print(self.colors.yellow("Running semantic checker tests..."))
+        checker_report_dir = self.report_dir / "checker"
+        if checker_report_dir.exists():
+            shutil.rmtree(checker_report_dir)
+        self.report_dir.mkdir(exist_ok=True)
+
+        env = os.environ.copy()
+        env["PYTHONPATH"] = str(self.root_dir)
+
+        self.run_command(
+            [
+                str(self.venv_python3),
+                "-m",
+                "pytest",
+                "tests/test_checker.py",
+                f"--html={checker_report_dir}/index.html",
+                "--timeout=10",
+                "--self-contained-html",
+                "-v",
+            ],
+            check=False,
+        )
+
+        print(
+            self.colors.green(
+                f"Checker tests completed. Reports at {checker_report_dir}/index.html"
+            )
+        )
+        self.clean_cache()
+
 
 def main():
     """Main entry point."""
@@ -526,6 +569,7 @@ def main():
             "test-lexer",
             "test-parser",
             "test-ast",
+            "test-checker",
         ],
         help="Command to execute",
     )
@@ -546,6 +590,7 @@ def main():
         "test-lexer": builder.test_lexer,
         "test-parser": builder.test_parser,
         "test-ast": builder.test_ast,
+        "test-checker": builder.test_checker,
     }
 
     if args.command in commands:
