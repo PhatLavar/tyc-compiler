@@ -290,28 +290,26 @@ struct Address {
 
 **Examples:**
 ```tyc
-// Error: Both auto variables unknown - cannot infer from binary operation
+// Error: neither auto has a known type — cannot use x + y
 void example() {
     auto x;
     auto y;
-    auto result = x + y;  // Error: TypeCannotBeInferred(x) and TypeCannotBeInferred(y)
-    // Neither x nor y has a known type, so the + operator cannot determine types
+    auto result = x + y;  // TypeCannotBeInferred(x) in reference tests
 }
 
-// Error: Both auto variables unknown - cannot infer from assignment
+// Error: same — cannot use x = y with both types unknown
 void test() {
     auto x;
     auto y;
-    x = y;  // Error: TypeCannotBeInferred(x) and TypeCannotBeInferred(y)
-    // Neither variable has a known type to infer from
+    x = y;  // TypeCannotBeInferred(y) in reference tests
 }
 
-// Error: Circular dependency in type inference
+// Error: mutual dependency with no base type
 void circular() {
     auto a;
     auto b;
-    a = b;  // Error: TypeCannotBeInferred(a) and TypeCannotBeInferred(b)
-    b = a;  // Both depend on each other, neither has a base type
+    a = b;  // TypeCannotBeInferred
+    b = a;
 }
 
 // Valid: auto with initialization
@@ -810,12 +808,14 @@ When multiple errors are present, report them in the following order:
 3. **Type errors** (TypeMismatchInStatement, TypeMismatchInExpression)
 4. **Control flow errors** (MustInLoop)
 
+**Within one tier:** report the **first** failure encountered during the semantic **visit** (order depends on how constructs are checked, not on source left-to-right alone). **One** error per run; use the **reference test suite** as ground truth.
+
 ### Scope Management
 
 - **Global scope:** Functions and structs (names are unique within each kind; struct names and function names may coincide—see Redeclared rules above)
 - **Function scope:** Parameters (visible throughout function body; see Redeclared rules—locals may not reuse parameter names)
 - **Local scope (block):** Variables declared in blocks `{}`
-- **Nested scopes:** Inner scopes can shadow outer scopes
+- **Nested scopes:** Inner scopes can shadow outer local variables (not parameters of the enclosing function)
 
 ### Type Inference System
 
