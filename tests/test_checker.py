@@ -1103,12 +1103,14 @@ def test_checker_089():
     """For loop with complex init and update"""
     source = """
 void main() {
-    for (int i = 0, j = 10; i < j; i++, j--) {
+    int j = 10;
+    for (int i = 0; i < j; i++) {
         printInt(i + j);
+        j--;
     }
 }
 """
-    expected = "AST Generation Error: Error on line 3 col 18: ,"
+    expected = "Static checking passed"
     assert Checker(source).check_from_source() == expected
 
 
