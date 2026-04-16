@@ -129,11 +129,11 @@ class StaticChecker(ASTVisitor):
                 del self.unresolved_autos[var_name]
                 raise TypeCannotBeInferred(var_decl)
             
-    def _lookup(self, name: str) -> Optional[Any]:
+    def _lookup(self, name: str) -> Tuple[bool, Optional[Any]]:
         for scope in reversed(self.scope_stack):
             if name in scope:
-                return scope[name]
-        return None
+                return True, scope[name]
+        return False, None
 
     def _is_int(self, typ):
         return isinstance(typ, IntType)
@@ -254,12 +254,14 @@ class StaticChecker(ASTVisitor):
             raise Redeclared("Variable", node.name)
             
         if node.var_type is None:   # auto
+            current_scope[node.name] = None
+            self.unresolved_autos[node.name] = node
+
             if node.init_value:
                 inferred_type = self.visit(node.init_value)
                 current_scope[node.name] = inferred_type
-            else:
-                current_scope[node.name] = None
-                self.unresolved_autos[node.name] = node
+                if inferred_type is not None:
+                    self.unresolved_autos.pop(node.name, None)
         
         else:
             declared_type = self.visit(node.var_type)
@@ -374,6 +376,9 @@ class StaticChecker(ASTVisitor):
         right_type = self.visit(node.right)
         operator = node.operator
 
+        if left_type is None and right_type is None:
+            raise TypeCannotBeInferred(node)
+
         if operator in ("+", "-", "*", "/"):
             if not self._is_numeric(left_type) or not self._is_numeric(right_type):
                 raise TypeMismatchInExpression(node)
@@ -396,7 +401,7 @@ class StaticChecker(ASTVisitor):
                 raise TypeMismatchInExpression(node)
             return IntType()
         
-        return TypeMismatchInExpression(node)
+        raise TypeMismatchInExpression(node)
 
     def visit_prefix_op(self, node: "PrefixOp", o: Any = None):
         operand_type = self.visit(node.operand)
@@ -429,12 +434,20 @@ class StaticChecker(ASTVisitor):
         if not isinstance(node.lhs, (Identifier, MemberAccess)):
             raise TypeMismatchInExpression(node)
         
+        if isinstance(node.lhs, Identifier):
+            exists, current_type = self._lookup(node.lhs.name)
+            right_type = self.visit(node.rhs)
+            
+            if exists and current_type is None:
+                for scope in reversed(self.scope_stack):
+                    if node.lhs.name in scope:
+                        scope[node.lhs.name] = right_type
+                        break
+                self.unresolved_autos.pop(node.lhs.name, None)
+                return right_type
+        
         left_type = self.visit(node.lhs)
         right_type = self.visit(node.rhs)
-
-        if isinstance(node.lhs, Identifier)and self._lookup(node.lhs.name) is None:
-            self.scope_stack[-1][node.lhs.name] = right_type
-            self.unresolved_autos.pop(node.lhs.name, None)
 
         if not self._is_compatible(left_type, right_type):
             raise TypeMismatchInExpression(node)
@@ -459,49 +472,47 @@ class StaticChecker(ASTVisitor):
     def visit_func_call(self, node: "FuncCall", o: Any = None):
         if node.name in self.global_functions:
             func = self.global_functions[node.name]
-            if len(node.args) != len(func.params):
-                raise TypeMismatchInExpression(node)
-            
-            for i, arg in enumerate(node.args):
-                arg_type = self.visit(arg)
-                param_type = self.visit(func.params[i].param_type)
+            param_types = [self.visit(p.param_type) for p in func.params]
+            return_type = func.return_type or VoidType() 
+        elif node.name in self.builtin_functions:
+            return_type, param_types = self.builtin_functions[node.name] 
+        else:
+            raise UndeclaredFunction(node.name)
 
-                if isinstance(arg, Identifier) and self._lookup(arg.name) is None:
-                    self.scope_stack[-1][arg.name] = param_type
-                    self.unresolved_autos.pop(arg.name, None)
+        if len(node.args) != len(param_types):
+            raise TypeMismatchInExpression(node)
+
+        for i, arg in enumerate(node.args):
+            expected_type = param_types[i]
+            
+            if isinstance(arg, Identifier):
+                exists, current_type = self._lookup(arg.name)
                 
-                if not self._is_compatible(arg_type, param_type):
-                    raise TypeMismatchInExpression(node)
-            
-            return func.return_type or VoidType()
-
-        # Built-in Functions
-        if node.name in self.builtin_functions:
-            return_type, param_types = self.builtin_functions[node.name]
-            if len(node.args) != len(param_types):
-                raise TypeMismatchInExpression(node)
-            
-            for i, arg in enumerate(node.args):
-                arg_type = self.visit(arg)
-                expected_type = param_types[i]
-
-                if isinstance(arg, Identifier) and self._lookup(arg.name) is None:
-                    self.scope_stack[-1][arg.name] = expected_type
+                if not exists:
+                    raise UndeclaredIdentifier(arg.name)
+                
+                if current_type is None:
+                    for scope in reversed(self.scope_stack):
+                        if arg.name in scope:
+                            scope[arg.name] = expected_type
+                            break
                     self.unresolved_autos.pop(arg.name, None)
-
-                if not self._is_compatible(arg_type, expected_type):
-                    raise TypeMismatchInExpression(node)
             
-            return return_type
-        
-        raise UndeclaredFunction(node.name)
+            arg_type = self.visit(arg)
+            
+            if not self._is_compatible(arg_type, expected_type):
+                raise TypeMismatchInExpression(node)
+
+        return return_type
 
     def visit_identifier(self, node: "Identifier", o: Any = None):
-        var_type = self._lookup(node.name)
-        if var_type is None:
+        exists, var_type = self._lookup(node.name)
+    
+        if not exists:
             raise UndeclaredIdentifier(node.name)
-        if var_type is None:
-            raise TypeCannotBeInferred(node)
+        #if var_type is None:
+        #    raise TypeCannotBeInferred(node)
+        
         return var_type
 
     def visit_struct_literal(self, node: "StructLiteral", o: Any = None):
