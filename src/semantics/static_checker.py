@@ -87,10 +87,11 @@ class StaticChecker(ASTVisitor):
         self.unresolved_autos: Dict[str, VarDecl] = {}
 
         self.loop_depth: int = 0
+        self.switch_depth: int = 0
         self.current_function_return_type: Optional[Any] = None
         self.inferred_return_type: Optional[Any] = None
 
-        self.builtin_function = {
+        self.builtin_functions = {
             "readInt": (IntType(), []),
             "readFloat": (FloatType(), []),
             "readString": (StringType(), []),
@@ -201,7 +202,8 @@ class StaticChecker(ASTVisitor):
 
         self.current_function_return_type = self.visit(node.return_type) if node.return_type else None
         
-        self.visit(node.body)
+        for stmt in node.body.statements:
+            self.visit(stmt)
 
         if self.current_function_return_type is None and self.inferred_return_type is None:
             self.inferred_return_type = VoidType()
@@ -246,25 +248,31 @@ class StaticChecker(ASTVisitor):
         return None
 
     def visit_var_decl(self, node: "VarDecl", o: Any = None):
-        if node.name in self.scope_stack[-1]:
+        current_scope = self.scope_stack[-1]
+
+        if node.name in current_scope:
             raise Redeclared("Variable", node.name)
-        
-        if node.var_type is None:
+            
+        if node.var_type is None:   # auto
             if node.init_value:
                 inferred_type = self.visit(node.init_value)
-                self.scope_stack[-1][node.name] = inferred_type
+                current_scope[node.name] = inferred_type
             else:
-                self.scope_stack[-1][node.name] = None
+                current_scope[node.name] = None
                 self.unresolved_autos[node.name] = node
         
         else:
             declared_type = self.visit(node.var_type)
-            self.scope_stack[-1][node.name] = declared_type
+            current_scope[node.name] = declared_type
             if node.init_value:
-                init_type = self.visit(node.init_value)
-                if not self._is_compatible(init_type, declared_type):
-                    raise TypeMismatchInStatement(node)
-
+                if isinstance(node.init_value, StructLiteral):
+                    self.visit(node.init_value)
+                else:
+                    init_type = self.visit(node.init_value)
+                    if not self._is_compatible(init_type, declared_type):
+                        raise TypeMismatchInStatement(node)
+        return None
+    
     def visit_if_stmt(self, node: "IfStmt", o: Any = None):
         condition_type = self.visit(node.condition)
         if not self._is_int(condition_type):
@@ -305,14 +313,18 @@ class StaticChecker(ASTVisitor):
         if not self._is_int(expr_type):
             raise TypeMismatchInStatement(node)
 
+        self.switch_depth += 1
         for case in node.cases:
             self.visit(case)
         if node.default_case:
             self.visit(node.default_case)
+        self.switch_depth -= 1
         return None
 
     def visit_case_stmt(self, node: "CaseStmt", o: Any = None):
-        self.visit(node.expr)
+        expr_type = self.visit(node.expr)
+        if not self._is_int(expr_type):
+            raise TypeMismatchInStatement(node)
         for stmt in node.statements:
             self.visit(stmt)
         return None
@@ -323,7 +335,7 @@ class StaticChecker(ASTVisitor):
         return None
 
     def visit_break_stmt(self, node: "BreakStmt", o: Any = None):
-        if self.loop_depth == 0:
+        if self.loop_depth == 0 and self.switch_depth == 0:
             raise MustInLoop(node)
         return None
 
