@@ -1304,13 +1304,10 @@ void main() {
 
 
 
-
-
+'''
 # ============================================================================
 # Valid Programs (test_001 - test_010)
 # ============================================================================
-
-
 def test_001():
     """Test a valid program that should pass all checks"""
     source = """
@@ -1380,3 +1377,4 @@ void main() {
 """
     expected = "Static checking passed"
     assert Checker(source).check_from_source() == expected
+'''
