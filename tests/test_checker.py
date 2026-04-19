@@ -587,7 +587,8 @@ void main() {
     auto x;
 }
 """
-    expected = "TypeCannotBeInferred(VarDecl(auto, x))"
+    # §5: unused `auto` at end of function body — ctx is the block (tyc-semantic).
+    expected = "TypeCannotBeInferred(BlockStmt([VarDecl(auto, x)]))"
     assert Checker(source).check_from_source() == expected
 
 
@@ -630,7 +631,7 @@ void main() {
     }
 }
 """
-    expected = "TypeCannotBeInferred(VarDecl(auto, y))"
+    expected = "TypeCannotBeInferred(BlockStmt([VarDecl(auto, y)]))"
     assert Checker(source).check_from_source() == expected
 
 def test_checker_051():
@@ -640,7 +641,10 @@ void main() {
     for (auto i;;) {}
 }
 """
-    expected = "TypeCannotBeInferred(VarDecl(auto, i))"
+    expected = (
+        "TypeCannotBeInferred(BlockStmt([ForStmt(for VarDecl(auto, i); None; "
+        "None do BlockStmt([]))]))"
+    )
     assert Checker(source).check_from_source() == expected
 
 def test_checker_052():
@@ -777,7 +781,7 @@ void main() {
     }
 }
 """
-    expected = "TypeMismatchInStatement(CaseStmt(case FloatLiteral(3.14): [BreakStmt()]))"
+    expected = "TypeMismatchInExpression(FloatLiteral(3.14))"
     assert Checker(source).check_from_source() == expected
 
 
@@ -895,7 +899,10 @@ void main() {
     x = "hello";
 }
 """
-    expected = "TypeMismatchInExpression(AssignExpr(Identifier(x) = StringLiteral('hello')))"
+    expected = (
+        "TypeMismatchInStatement(ExprStmt(AssignExpr(Identifier(x) = "
+        "StringLiteral('hello'))))"
+    )
     assert Checker(source).check_from_source() == expected
 
 
@@ -918,7 +925,10 @@ void main() {
     x.y = 5;
 }
 """
-    expected = "TypeMismatchInExpression(MemberAccess(Identifier(x).y))"
+    expected = (
+        "TypeMismatchInStatement(ExprStmt(AssignExpr(MemberAccess(Identifier(x).y) = "
+        "IntLiteral(5))))"
+    )
     assert Checker(source).check_from_source() == expected
 
 
