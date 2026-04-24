@@ -12,10 +12,10 @@ def test_001():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
-                    [ExprStmt(FuncCall("printString", [StringLiteral("Hello World")]))],
+                    [ExprStmt(FuncCall('printString', [StringLiteral('Hello World')]))],
                 ),
             ),
         ],
@@ -31,9 +31,9 @@ def test_002():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printInt", [IntLiteral(42)]))]),
+                BlockStmt([ExprStmt(FuncCall('printInt', [IntLiteral(42)]))]),
             ),
         ],
     )
@@ -48,9 +48,9 @@ def test_003():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printFloat", [FloatLiteral(3.14)]))]),
+                BlockStmt([ExprStmt(FuncCall('printFloat', [FloatLiteral(3.14)]))]),
             ),
         ],
     )
@@ -65,12 +65,12 @@ def test_004():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(10)),
-                        ExprStmt(FuncCall("printInt", [Identifier("x")])),
+                        VarDecl(IntType(), 'x', IntLiteral(10)),
+                        ExprStmt(FuncCall('printInt', [Identifier('x')])),
                     ],
                 ),
             ),
@@ -87,14 +87,14 @@ def test_005():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(5), "+", IntLiteral(3))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(5), '+', IntLiteral(3))],
                             ),
                         ),
                     ],
@@ -113,14 +113,14 @@ def test_006():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(6), "*", IntLiteral(7))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(6), '*', IntLiteral(7))],
                             ),
                         ),
                     ],
@@ -139,14 +139,14 @@ def test_007():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         IfStmt(
-                            BinaryOp(IntLiteral(1), "<", IntLiteral(2)),
-                            ExprStmt(FuncCall("printString", [StringLiteral("yes")])),
-                            ExprStmt(FuncCall("printString", [StringLiteral("no")])),
+                            BinaryOp(IntLiteral(1), '<', IntLiteral(2)),
+                            ExprStmt(FuncCall('printString', [StringLiteral('yes')])),
+                            ExprStmt(FuncCall('printString', [StringLiteral('no')])),
                         ),
                     ],
                 ),
@@ -164,24 +164,20 @@ def test_008():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "i", IntLiteral(0)),
+                        VarDecl(IntType(), 'i', IntLiteral(0)),
                         WhileStmt(
-                            BinaryOp(Identifier("i"), "<", IntLiteral(3)),
+                            BinaryOp(Identifier('i'), '<', IntLiteral(3)),
                             BlockStmt(
                                 [
-                                    ExprStmt(FuncCall("printInt", [Identifier("i")])),
+                                    ExprStmt(FuncCall('printInt', [Identifier('i')])),
                                     ExprStmt(
                                         AssignExpr(
-                                            Identifier("i"),
-                                            BinaryOp(
-                                                Identifier("i"),
-                                                "+",
-                                                IntLiteral(1),
-                                            ),
+                                            Identifier('i'),
+                                            BinaryOp(Identifier('i'), '+', IntLiteral(1)),
                                         ),
                                     ),
                                 ],
@@ -203,20 +199,20 @@ def test_009():
         [
             FuncDecl(
                 IntType(),
-                "add",
-                [Param(IntType(), "a"), Param(IntType(), "b")],
-                BlockStmt([ReturnStmt(BinaryOp(Identifier("a"), "+", Identifier("b")))]),
+                'add',
+                [Param(IntType(), 'a'), Param(IntType(), 'b')],
+                BlockStmt([ReturnStmt(BinaryOp(Identifier('a'), '+', Identifier('b')))]),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [FuncCall("add", [IntLiteral(20), IntLiteral(22)])],
+                                'printInt',
+                                [FuncCall('add', [IntLiteral(20), IntLiteral(22)])],
                             ),
                         ),
                     ],
@@ -235,16 +231,16 @@ def test_010():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(10)),
-                        VarDecl(IntType(), "y", IntLiteral(20)),
+                        VarDecl(IntType(), 'x', IntLiteral(10)),
+                        VarDecl(IntType(), 'y', IntLiteral(20)),
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(Identifier("x"), "+", Identifier("y"))],
+                                'printInt',
+                                [BinaryOp(Identifier('x'), '+', Identifier('y'))],
                             ),
                         ),
                     ],
@@ -263,17 +259,15 @@ def test_011():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(0)),
-                            BinaryOp(Identifier("i"), "<", IntLiteral(3)),
-                            PostfixOp("++", Identifier("i")),
-                            BlockStmt(
-                                [ExprStmt(FuncCall("printInt", [Identifier("i")]))],
-                            ),
+                            VarDecl(IntType(), 'i', IntLiteral(0)),
+                            BinaryOp(Identifier('i'), '<', IntLiteral(3)),
+                            PostfixOp('++', Identifier('i')),
+                            BlockStmt([ExprStmt(FuncCall('printInt', [Identifier('i')]))]),
                         ),
                     ],
                 ),
@@ -291,14 +285,12 @@ def test_012():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(4)),
-                        ExprStmt(
-                            FuncCall("printInt", [PrefixOp("++", Identifier("x"))]),
-                        ),
+                        VarDecl(IntType(), 'x', IntLiteral(4)),
+                        ExprStmt(FuncCall('printInt', [PrefixOp('++', Identifier('x'))])),
                     ],
                 ),
             ),
@@ -315,15 +307,13 @@ def test_013():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(4)),
-                        ExprStmt(
-                            FuncCall("printInt", [PostfixOp("++", Identifier("x"))]),
-                        ),
-                        ExprStmt(FuncCall("printInt", [Identifier("x")])),
+                        VarDecl(IntType(), 'x', IntLiteral(4)),
+                        ExprStmt(FuncCall('printInt', [PostfixOp('++', Identifier('x'))])),
+                        ExprStmt(FuncCall('printInt', [Identifier('x')])),
                     ],
                 ),
             ),
@@ -340,23 +330,23 @@ def test_014():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(1), "&&", IntLiteral(1))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(1), '&&', IntLiteral(1))],
                             ),
                         ),
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(1), "||", IntLiteral(0))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(1), '||', IntLiteral(0))],
                             ),
                         ),
-                        ExprStmt(FuncCall("printInt", [PrefixOp("!", IntLiteral(0))])),
+                        ExprStmt(FuncCall('printInt', [PrefixOp('!', IntLiteral(0))])),
                     ],
                 ),
             ),
@@ -371,30 +361,22 @@ def test_015():
     """Test 15: Struct member assignment"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "p",
+                            StructType('Point'),
+                            'p',
                             StructLiteral([IntLiteral(1), IntLiteral(2)]),
                         ),
                         ExprStmt(
-                            AssignExpr(
-                                MemberAccess(Identifier("p"), "x"),
-                                IntLiteral(9),
-                            ),
+                            AssignExpr(MemberAccess(Identifier('p'), 'x'), IntLiteral(9)),
                         ),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p"), "x")]),
-                        ),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('p'), 'x')])),
                     ],
                 ),
             ),
@@ -409,25 +391,22 @@ def test_016():
     """Test 16: Struct assignment copies object reference"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "p1",
+                            StructType('Point'),
+                            'p1',
                             StructLiteral([IntLiteral(3), IntLiteral(4)]),
                         ),
-                        VarDecl(StructType("Point"), "p2"),
-                        ExprStmt(AssignExpr(Identifier("p2"), Identifier("p1"))),
+                        VarDecl(StructType('Point'), 'p2'),
+                        ExprStmt(AssignExpr(Identifier('p2'), Identifier('p1'))),
                         ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p2"), "y")]),
+                            FuncCall('printInt', [MemberAccess(Identifier('p2'), 'y')]),
                         ),
                     ],
                 ),
@@ -445,25 +424,25 @@ def test_017():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(0)),
-                            BinaryOp(Identifier("i"), "<", IntLiteral(5)),
-                            PostfixOp("++", Identifier("i")),
+                            VarDecl(IntType(), 'i', IntLiteral(0)),
+                            BinaryOp(Identifier('i'), '<', IntLiteral(5)),
+                            PostfixOp('++', Identifier('i')),
                             BlockStmt(
                                 [
                                     IfStmt(
-                                        BinaryOp(Identifier("i"), "==", IntLiteral(1)),
+                                        BinaryOp(Identifier('i'), '==', IntLiteral(1)),
                                         ContinueStmt(),
                                     ),
                                     IfStmt(
-                                        BinaryOp(Identifier("i"), "==", IntLiteral(4)),
+                                        BinaryOp(Identifier('i'), '==', IntLiteral(4)),
                                         BreakStmt(),
                                     ),
-                                    ExprStmt(FuncCall("printInt", [Identifier("i")])),
+                                    ExprStmt(FuncCall('printInt', [Identifier('i')])),
                                 ],
                             ),
                         ),
@@ -483,22 +462,19 @@ def test_018():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(2)),
+                        VarDecl(IntType(), 'x', IntLiteral(2)),
                         SwitchStmt(
-                            Identifier("x"),
+                            Identifier('x'),
                             [
                                 CaseStmt(
                                     IntLiteral(1),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("one")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('one')]),
                                         ),
                                         BreakStmt(),
                                     ],
@@ -507,10 +483,7 @@ def test_018():
                                     IntLiteral(2),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("two")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('two')]),
                                         ),
                                         BreakStmt(),
                                     ],
@@ -519,10 +492,7 @@ def test_018():
                             DefaultStmt(
                                 [
                                     ExprStmt(
-                                        FuncCall(
-                                            "printString",
-                                            [StringLiteral("other")],
-                                        ),
+                                        FuncCall('printString', [StringLiteral('other')]),
                                     ),
                                 ],
                             ),
@@ -543,14 +513,14 @@ def test_019():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(9), "-", IntLiteral(4))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(9), '-', IntLiteral(4))],
                             ),
                         ),
                     ],
@@ -569,14 +539,14 @@ def test_020():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(21), "/", IntLiteral(3))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(21), '/', IntLiteral(3))],
                             ),
                         ),
                     ],
@@ -595,14 +565,14 @@ def test_021():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(29), "%", IntLiteral(6))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(29), '%', IntLiteral(6))],
                             ),
                         ),
                     ],
@@ -621,17 +591,17 @@ def test_022():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     BinaryOp(
-                                        BinaryOp(IntLiteral(2), "+", IntLiteral(3)),
-                                        "*",
+                                        BinaryOp(IntLiteral(2), '+', IntLiteral(3)),
+                                        '*',
                                         IntLiteral(4),
                                     ),
                                 ],
@@ -653,18 +623,18 @@ def test_023():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     BinaryOp(
                                         IntLiteral(20),
-                                        "/",
-                                        BinaryOp(IntLiteral(3), "+", IntLiteral(2)),
+                                        '/',
+                                        BinaryOp(IntLiteral(3), '+', IntLiteral(2)),
                                     ),
                                 ],
                             ),
@@ -685,17 +655,17 @@ def test_024():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     BinaryOp(
-                                        BinaryOp(IntLiteral(30), "-", IntLiteral(5)),
-                                        "-",
+                                        BinaryOp(IntLiteral(30), '-', IntLiteral(5)),
+                                        '-',
                                         IntLiteral(10),
                                     ),
                                 ],
@@ -717,18 +687,18 @@ def test_025():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     BinaryOp(
                                         IntLiteral(6),
-                                        "*",
-                                        BinaryOp(IntLiteral(8), "-", IntLiteral(3)),
+                                        '*',
+                                        BinaryOp(IntLiteral(8), '-', IntLiteral(3)),
                                     ),
                                 ],
                             ),
@@ -749,18 +719,18 @@ def test_026():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     BinaryOp(
-                                        BinaryOp(IntLiteral(1), "+", IntLiteral(2)),
-                                        "+",
-                                        BinaryOp(IntLiteral(3), "+", IntLiteral(4)),
+                                        BinaryOp(IntLiteral(1), '+', IntLiteral(2)),
+                                        '+',
+                                        BinaryOp(IntLiteral(3), '+', IntLiteral(4)),
                                     ),
                                 ],
                             ),
@@ -781,14 +751,14 @@ def test_027():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(20), "%", IntLiteral(5))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(20), '%', IntLiteral(5))],
                             ),
                         ),
                     ],
@@ -807,14 +777,14 @@ def test_028():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(100), "+", IntLiteral(23))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(100), '+', IntLiteral(23))],
                             ),
                         ),
                     ],
@@ -833,17 +803,17 @@ def test_029():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     BinaryOp(
-                                        BinaryOp(IntLiteral(8), "*", IntLiteral(2)),
-                                        "/",
+                                        BinaryOp(IntLiteral(8), '*', IntLiteral(2)),
+                                        '/',
                                         IntLiteral(4),
                                     ),
                                 ],
@@ -865,18 +835,18 @@ def test_030():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     BinaryOp(
                                         IntLiteral(18),
-                                        "/",
-                                        BinaryOp(IntLiteral(2), "+", IntLiteral(1)),
+                                        '/',
+                                        BinaryOp(IntLiteral(2), '+', IntLiteral(1)),
                                     ),
                                 ],
                             ),
@@ -897,16 +867,16 @@ def test_031():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "a", IntLiteral(7)),
-                        VarDecl(IntType(), "b", IntLiteral(5)),
+                        VarDecl(IntType(), 'a', IntLiteral(7)),
+                        VarDecl(IntType(), 'b', IntLiteral(5)),
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(Identifier("a"), "*", Identifier("b"))],
+                                'printInt',
+                                [BinaryOp(Identifier('a'), '*', Identifier('b'))],
                             ),
                         ),
                     ],
@@ -925,18 +895,18 @@ def test_032():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(0)),
+                        VarDecl(IntType(), 'x', IntLiteral(0)),
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [AssignExpr(Identifier("x"), IntLiteral(8))],
+                                'printInt',
+                                [AssignExpr(Identifier('x'), IntLiteral(8))],
                             ),
                         ),
-                        ExprStmt(FuncCall("printInt", [Identifier("x")])),
+                        ExprStmt(FuncCall('printInt', [Identifier('x')])),
                     ],
                 ),
             ),
@@ -953,18 +923,18 @@ def test_033():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(2)),
+                        VarDecl(IntType(), 'x', IntLiteral(2)),
                         ExprStmt(
                             AssignExpr(
-                                Identifier("x"),
-                                BinaryOp(Identifier("x"), "+", IntLiteral(9)),
+                                Identifier('x'),
+                                BinaryOp(Identifier('x'), '+', IntLiteral(9)),
                             ),
                         ),
-                        ExprStmt(FuncCall("printInt", [Identifier("x")])),
+                        ExprStmt(FuncCall('printInt', [Identifier('x')])),
                     ],
                 ),
             ),
@@ -981,18 +951,18 @@ def test_034():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(1)),
+                        VarDecl(IntType(), 'x', IntLiteral(1)),
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     AssignExpr(
-                                        Identifier("x"),
-                                        BinaryOp(IntLiteral(6), "*", IntLiteral(7)),
+                                        Identifier('x'),
+                                        BinaryOp(IntLiteral(6), '*', IntLiteral(7)),
                                     ),
                                 ],
                             ),
@@ -1013,22 +983,22 @@ def test_035():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(9)),
-                        VarDecl(IntType(), "y", IntLiteral(3)),
+                        VarDecl(IntType(), 'x', IntLiteral(9)),
+                        VarDecl(IntType(), 'y', IntLiteral(3)),
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(Identifier("x"), "/", Identifier("y"))],
+                                'printInt',
+                                [BinaryOp(Identifier('x'), '/', Identifier('y'))],
                             ),
                         ),
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(Identifier("x"), "%", Identifier("y"))],
+                                'printInt',
+                                [BinaryOp(Identifier('x'), '%', Identifier('y'))],
                             ),
                         ),
                     ],
@@ -1047,9 +1017,9 @@ def test_036():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printFloat", [FloatLiteral(0.5)]))]),
+                BlockStmt([ExprStmt(FuncCall('printFloat', [FloatLiteral(0.5)]))]),
             ),
         ],
     )
@@ -1064,14 +1034,14 @@ def test_037():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printFloat",
-                                [BinaryOp(FloatLiteral(1.5), "+", FloatLiteral(2.25))],
+                                'printFloat',
+                                [BinaryOp(FloatLiteral(1.5), '+', FloatLiteral(2.25))],
                             ),
                         ),
                     ],
@@ -1090,14 +1060,14 @@ def test_038():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printFloat",
-                                [BinaryOp(FloatLiteral(5.5), "-", FloatLiteral(2.25))],
+                                'printFloat',
+                                [BinaryOp(FloatLiteral(5.5), '-', FloatLiteral(2.25))],
                             ),
                         ),
                     ],
@@ -1116,14 +1086,14 @@ def test_039():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printFloat",
-                                [BinaryOp(FloatLiteral(1.5), "*", FloatLiteral(2.0))],
+                                'printFloat',
+                                [BinaryOp(FloatLiteral(1.5), '*', FloatLiteral(2.0))],
                             ),
                         ),
                     ],
@@ -1142,14 +1112,14 @@ def test_040():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printFloat",
-                                [BinaryOp(FloatLiteral(7.5), "/", FloatLiteral(2.5))],
+                                'printFloat',
+                                [BinaryOp(FloatLiteral(7.5), '/', FloatLiteral(2.5))],
                             ),
                         ),
                     ],
@@ -1168,14 +1138,10 @@ def test_041():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
-                    [
-                        ExprStmt(
-                            FuncCall("printFloat", [PrefixOp("-", FloatLiteral(4.5))]),
-                        ),
-                    ],
+                    [ExprStmt(FuncCall('printFloat', [PrefixOp('-', FloatLiteral(4.5))]))],
                 ),
             ),
         ],
@@ -1191,14 +1157,10 @@ def test_042():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
-                    [
-                        ExprStmt(
-                            FuncCall("printFloat", [PrefixOp("+", FloatLiteral(6.25))]),
-                        ),
-                    ],
+                    [ExprStmt(FuncCall('printFloat', [PrefixOp('+', FloatLiteral(6.25))]))],
                 ),
             ),
         ],
@@ -1214,16 +1176,16 @@ def test_043():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(FloatType(), "a", FloatLiteral(2.5)),
-                        VarDecl(FloatType(), "b", FloatLiteral(4.0)),
+                        VarDecl(FloatType(), 'a', FloatLiteral(2.5)),
+                        VarDecl(FloatType(), 'b', FloatLiteral(4.0)),
                         ExprStmt(
                             FuncCall(
-                                "printFloat",
-                                [BinaryOp(Identifier("a"), "*", Identifier("b"))],
+                                'printFloat',
+                                [BinaryOp(Identifier('a'), '*', Identifier('b'))],
                             ),
                         ),
                     ],
@@ -1242,18 +1204,18 @@ def test_044():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(FloatType(), "v", FloatLiteral(1.25)),
+                        VarDecl(FloatType(), 'v', FloatLiteral(1.25)),
                         ExprStmt(
                             AssignExpr(
-                                Identifier("v"),
-                                BinaryOp(Identifier("v"), "+", FloatLiteral(0.75)),
+                                Identifier('v'),
+                                BinaryOp(Identifier('v'), '+', FloatLiteral(0.75)),
                             ),
                         ),
-                        ExprStmt(FuncCall("printFloat", [Identifier("v")])),
+                        ExprStmt(FuncCall('printFloat', [Identifier('v')])),
                     ],
                 ),
             ),
@@ -1270,20 +1232,20 @@ def test_045():
         [
             FuncDecl(
                 FloatType(),
-                "twice",
-                [Param(FloatType(), "x")],
-                BlockStmt([ReturnStmt(BinaryOp(Identifier("x"), "+", Identifier("x")))]),
+                'twice',
+                [Param(FloatType(), 'x')],
+                BlockStmt([ReturnStmt(BinaryOp(Identifier('x'), '+', Identifier('x')))]),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printFloat",
-                                [FuncCall("twice", [FloatLiteral(1.25)])],
+                                'printFloat',
+                                [FuncCall('twice', [FloatLiteral(1.25)])],
                             ),
                         ),
                     ],
@@ -1302,14 +1264,14 @@ def test_046():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(1), "<", IntLiteral(2))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(1), '<', IntLiteral(2))],
                             ),
                         ),
                     ],
@@ -1328,14 +1290,14 @@ def test_047():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(5), "<", IntLiteral(2))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(5), '<', IntLiteral(2))],
                             ),
                         ),
                     ],
@@ -1354,14 +1316,14 @@ def test_048():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(4), "<=", IntLiteral(4))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(4), '<=', IntLiteral(4))],
                             ),
                         ),
                     ],
@@ -1380,14 +1342,14 @@ def test_049():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(9), ">", IntLiteral(3))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(9), '>', IntLiteral(3))],
                             ),
                         ),
                     ],
@@ -1406,14 +1368,14 @@ def test_050():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(2), ">=", IntLiteral(7))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(2), '>=', IntLiteral(7))],
                             ),
                         ),
                     ],
@@ -1432,14 +1394,14 @@ def test_051():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(6), "==", IntLiteral(6))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(6), '==', IntLiteral(6))],
                             ),
                         ),
                     ],
@@ -1458,14 +1420,14 @@ def test_052():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(6), "!=", IntLiteral(5))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(6), '!=', IntLiteral(5))],
                             ),
                         ),
                     ],
@@ -1484,14 +1446,14 @@ def test_053():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(1), "&&", IntLiteral(0))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(1), '&&', IntLiteral(0))],
                             ),
                         ),
                     ],
@@ -1510,14 +1472,14 @@ def test_054():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(1), "||", IntLiteral(0))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(1), '||', IntLiteral(0))],
                             ),
                         ),
                     ],
@@ -1536,14 +1498,14 @@ def test_055():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [BinaryOp(IntLiteral(0), "||", IntLiteral(0))],
+                                'printInt',
+                                [BinaryOp(IntLiteral(0), '||', IntLiteral(0))],
                             ),
                         ),
                     ],
@@ -1562,11 +1524,9 @@ def test_056():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt(
-                    [ExprStmt(FuncCall("printInt", [PrefixOp("!", IntLiteral(0))]))],
-                ),
+                BlockStmt([ExprStmt(FuncCall('printInt', [PrefixOp('!', IntLiteral(0))]))]),
             ),
         ],
     )
@@ -1581,11 +1541,9 @@ def test_057():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt(
-                    [ExprStmt(FuncCall("printInt", [PrefixOp("!", IntLiteral(2))]))],
-                ),
+                BlockStmt([ExprStmt(FuncCall('printInt', [PrefixOp('!', IntLiteral(2))]))]),
             ),
         ],
     )
@@ -1600,11 +1558,9 @@ def test_058():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt(
-                    [ExprStmt(FuncCall("printInt", [PrefixOp("+", IntLiteral(8))]))],
-                ),
+                BlockStmt([ExprStmt(FuncCall('printInt', [PrefixOp('+', IntLiteral(8))]))]),
             ),
         ],
     )
@@ -1619,11 +1575,9 @@ def test_059():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt(
-                    [ExprStmt(FuncCall("printInt", [PrefixOp("-", IntLiteral(8))]))],
-                ),
+                BlockStmt([ExprStmt(FuncCall('printInt', [PrefixOp('-', IntLiteral(8))]))]),
             ),
         ],
     )
@@ -1638,14 +1592,12 @@ def test_060():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(1)),
-                        ExprStmt(
-                            FuncCall("printInt", [PrefixOp("++", Identifier("x"))]),
-                        ),
+                        VarDecl(IntType(), 'x', IntLiteral(1)),
+                        ExprStmt(FuncCall('printInt', [PrefixOp('++', Identifier('x'))])),
                     ],
                 ),
             ),
@@ -1662,14 +1614,12 @@ def test_061():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(3)),
-                        ExprStmt(
-                            FuncCall("printInt", [PrefixOp("--", Identifier("x"))]),
-                        ),
+                        VarDecl(IntType(), 'x', IntLiteral(3)),
+                        ExprStmt(FuncCall('printInt', [PrefixOp('--', Identifier('x'))])),
                     ],
                 ),
             ),
@@ -1686,15 +1636,13 @@ def test_062():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(7)),
-                        ExprStmt(
-                            FuncCall("printInt", [PostfixOp("++", Identifier("x"))]),
-                        ),
-                        ExprStmt(FuncCall("printInt", [Identifier("x")])),
+                        VarDecl(IntType(), 'x', IntLiteral(7)),
+                        ExprStmt(FuncCall('printInt', [PostfixOp('++', Identifier('x'))])),
+                        ExprStmt(FuncCall('printInt', [Identifier('x')])),
                     ],
                 ),
             ),
@@ -1711,15 +1659,13 @@ def test_063():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(7)),
-                        ExprStmt(
-                            FuncCall("printInt", [PostfixOp("--", Identifier("x"))]),
-                        ),
-                        ExprStmt(FuncCall("printInt", [Identifier("x")])),
+                        VarDecl(IntType(), 'x', IntLiteral(7)),
+                        ExprStmt(FuncCall('printInt', [PostfixOp('--', Identifier('x'))])),
+                        ExprStmt(FuncCall('printInt', [Identifier('x')])),
                     ],
                 ),
             ),
@@ -1736,18 +1682,18 @@ def test_064():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(0)),
+                        VarDecl(IntType(), 'x', IntLiteral(0)),
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     BinaryOp(
-                                        AssignExpr(Identifier("x"), IntLiteral(5)),
-                                        "+",
+                                        AssignExpr(Identifier('x'), IntLiteral(5)),
+                                        '+',
                                         IntLiteral(3),
                                     ),
                                 ],
@@ -1769,13 +1715,13 @@ def test_065():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(10)),
-                        ExprStmt(AssignExpr(Identifier("x"), IntLiteral(12))),
-                        ExprStmt(FuncCall("printInt", [Identifier("x")])),
+                        VarDecl(IntType(), 'x', IntLiteral(10)),
+                        ExprStmt(AssignExpr(Identifier('x'), IntLiteral(12))),
+                        ExprStmt(FuncCall('printInt', [Identifier('x')])),
                     ],
                 ),
             ),
@@ -1792,20 +1738,20 @@ def test_066():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "a", IntLiteral(0)),
-                        VarDecl(IntType(), "b", IntLiteral(0)),
+                        VarDecl(IntType(), 'a', IntLiteral(0)),
+                        VarDecl(IntType(), 'b', IntLiteral(0)),
                         ExprStmt(
                             AssignExpr(
-                                Identifier("a"),
-                                AssignExpr(Identifier("b"), IntLiteral(9)),
+                                Identifier('a'),
+                                AssignExpr(Identifier('b'), IntLiteral(9)),
                             ),
                         ),
-                        ExprStmt(FuncCall("printInt", [Identifier("a")])),
-                        ExprStmt(FuncCall("printInt", [Identifier("b")])),
+                        ExprStmt(FuncCall('printInt', [Identifier('a')])),
+                        ExprStmt(FuncCall('printInt', [Identifier('b')])),
                     ],
                 ),
             ),
@@ -1822,17 +1768,17 @@ def test_067():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(0)),
+                        VarDecl(IntType(), 'x', IntLiteral(0)),
                         IfStmt(
-                            AssignExpr(Identifier("x"), IntLiteral(1)),
-                            ExprStmt(FuncCall("printString", [StringLiteral("T")])),
-                            ExprStmt(FuncCall("printString", [StringLiteral("F")])),
+                            AssignExpr(Identifier('x'), IntLiteral(1)),
+                            ExprStmt(FuncCall('printString', [StringLiteral('T')])),
+                            ExprStmt(FuncCall('printString', [StringLiteral('F')])),
                         ),
-                        ExprStmt(FuncCall("printInt", [Identifier("x")])),
+                        ExprStmt(FuncCall('printInt', [Identifier('x')])),
                     ],
                 ),
             ),
@@ -1849,18 +1795,18 @@ def test_068():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(5)),
+                        VarDecl(IntType(), 'x', IntLiteral(5)),
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     AssignExpr(
-                                        Identifier("x"),
-                                        PrefixOp("--", Identifier("x")),
+                                        Identifier('x'),
+                                        PrefixOp('--', Identifier('x')),
                                     ),
                                 ],
                             ),
@@ -1881,18 +1827,14 @@ def test_069():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(4)),
-                        ExprStmt(
-                            FuncCall("printInt", [PrefixOp("++", Identifier("x"))]),
-                        ),
-                        ExprStmt(
-                            FuncCall("printInt", [PostfixOp("++", Identifier("x"))]),
-                        ),
-                        ExprStmt(FuncCall("printInt", [Identifier("x")])),
+                        VarDecl(IntType(), 'x', IntLiteral(4)),
+                        ExprStmt(FuncCall('printInt', [PrefixOp('++', Identifier('x'))])),
+                        ExprStmt(FuncCall('printInt', [PostfixOp('++', Identifier('x'))])),
+                        ExprStmt(FuncCall('printInt', [Identifier('x')])),
                     ],
                 ),
             ),
@@ -1909,14 +1851,14 @@ def test_070():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         IfStmt(
-                            BinaryOp(IntLiteral(5), "<", IntLiteral(3)),
-                            ExprStmt(FuncCall("printString", [StringLiteral("A")])),
-                            ExprStmt(FuncCall("printString", [StringLiteral("B")])),
+                            BinaryOp(IntLiteral(5), '<', IntLiteral(3)),
+                            ExprStmt(FuncCall('printString', [StringLiteral('A')])),
+                            ExprStmt(FuncCall('printString', [StringLiteral('B')])),
                         ),
                     ],
                 ),
@@ -1934,13 +1876,13 @@ def test_071():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         IfStmt(
-                            BinaryOp(IntLiteral(5), "<", IntLiteral(3)),
-                            ExprStmt(FuncCall("printString", [StringLiteral("A")])),
+                            BinaryOp(IntLiteral(5), '<', IntLiteral(3)),
+                            ExprStmt(FuncCall('printString', [StringLiteral('A')])),
                         ),
                     ],
                 ),
@@ -1958,32 +1900,26 @@ def test_072():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         IfStmt(
-                            BinaryOp(IntLiteral(2), "==", IntLiteral(2)),
+                            BinaryOp(IntLiteral(2), '==', IntLiteral(2)),
                             BlockStmt(
                                 [
                                     IfStmt(
-                                        BinaryOp(IntLiteral(3), ">", IntLiteral(1)),
+                                        BinaryOp(IntLiteral(3), '>', IntLiteral(1)),
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("ok")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('ok')]),
                                         ),
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("bad")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('bad')]),
                                         ),
                                     ),
                                 ],
                             ),
-                            ExprStmt(FuncCall("printString", [StringLiteral("outer")])),
+                            ExprStmt(FuncCall('printString', [StringLiteral('outer')])),
                         ),
                     ],
                 ),
@@ -2001,24 +1937,20 @@ def test_073():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "i", IntLiteral(0)),
+                        VarDecl(IntType(), 'i', IntLiteral(0)),
                         WhileStmt(
-                            BinaryOp(Identifier("i"), "<", IntLiteral(4)),
+                            BinaryOp(Identifier('i'), '<', IntLiteral(4)),
                             BlockStmt(
                                 [
-                                    ExprStmt(FuncCall("printInt", [Identifier("i")])),
+                                    ExprStmt(FuncCall('printInt', [Identifier('i')])),
                                     ExprStmt(
                                         AssignExpr(
-                                            Identifier("i"),
-                                            BinaryOp(
-                                                Identifier("i"),
-                                                "+",
-                                                IntLiteral(1),
-                                            ),
+                                            Identifier('i'),
+                                            BinaryOp(Identifier('i'), '+', IntLiteral(1)),
                                         ),
                                     ),
                                 ],
@@ -2040,40 +1972,36 @@ def test_074():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "i", IntLiteral(1)),
-                        VarDecl(IntType(), "sum", IntLiteral(0)),
+                        VarDecl(IntType(), 'i', IntLiteral(1)),
+                        VarDecl(IntType(), 'sum', IntLiteral(0)),
                         WhileStmt(
-                            BinaryOp(Identifier("i"), "<=", IntLiteral(4)),
+                            BinaryOp(Identifier('i'), '<=', IntLiteral(4)),
                             BlockStmt(
                                 [
                                     ExprStmt(
                                         AssignExpr(
-                                            Identifier("sum"),
+                                            Identifier('sum'),
                                             BinaryOp(
-                                                Identifier("sum"),
-                                                "+",
-                                                Identifier("i"),
+                                                Identifier('sum'),
+                                                '+',
+                                                Identifier('i'),
                                             ),
                                         ),
                                     ),
                                     ExprStmt(
                                         AssignExpr(
-                                            Identifier("i"),
-                                            BinaryOp(
-                                                Identifier("i"),
-                                                "+",
-                                                IntLiteral(1),
-                                            ),
+                                            Identifier('i'),
+                                            BinaryOp(Identifier('i'), '+', IntLiteral(1)),
                                         ),
                                     ),
                                 ],
                             ),
                         ),
-                        ExprStmt(FuncCall("printInt", [Identifier("sum")])),
+                        ExprStmt(FuncCall('printInt', [Identifier('sum')])),
                     ],
                 ),
             ),
@@ -2090,17 +2018,15 @@ def test_075():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(1)),
-                            BinaryOp(Identifier("i"), "<=", IntLiteral(3)),
-                            PostfixOp("++", Identifier("i")),
-                            BlockStmt(
-                                [ExprStmt(FuncCall("printInt", [Identifier("i")]))],
-                            ),
+                            VarDecl(IntType(), 'i', IntLiteral(1)),
+                            BinaryOp(Identifier('i'), '<=', IntLiteral(3)),
+                            PostfixOp('++', Identifier('i')),
+                            BlockStmt([ExprStmt(FuncCall('printInt', [Identifier('i')]))]),
                         ),
                     ],
                 ),
@@ -2118,17 +2044,15 @@ def test_076():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(5)),
-                            BinaryOp(Identifier("i"), "<", IntLiteral(5)),
-                            PostfixOp("++", Identifier("i")),
-                            BlockStmt(
-                                [ExprStmt(FuncCall("printInt", [Identifier("i")]))],
-                            ),
+                            VarDecl(IntType(), 'i', IntLiteral(5)),
+                            BinaryOp(Identifier('i'), '<', IntLiteral(5)),
+                            PostfixOp('++', Identifier('i')),
+                            BlockStmt([ExprStmt(FuncCall('printInt', [Identifier('i')]))]),
                         ),
                     ],
                 ),
@@ -2146,31 +2070,31 @@ def test_077():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "sum", IntLiteral(0)),
+                        VarDecl(IntType(), 'sum', IntLiteral(0)),
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(1)),
-                            BinaryOp(Identifier("i"), "<=", IntLiteral(4)),
-                            PostfixOp("++", Identifier("i")),
+                            VarDecl(IntType(), 'i', IntLiteral(1)),
+                            BinaryOp(Identifier('i'), '<=', IntLiteral(4)),
+                            PostfixOp('++', Identifier('i')),
                             BlockStmt(
                                 [
                                     ExprStmt(
                                         AssignExpr(
-                                            Identifier("sum"),
+                                            Identifier('sum'),
                                             BinaryOp(
-                                                Identifier("sum"),
-                                                "+",
-                                                Identifier("i"),
+                                                Identifier('sum'),
+                                                '+',
+                                                Identifier('i'),
                                             ),
                                         ),
                                     ),
                                 ],
                             ),
                         ),
-                        ExprStmt(FuncCall("printInt", [Identifier("sum")])),
+                        ExprStmt(FuncCall('printInt', [Identifier('sum')])),
                     ],
                 ),
             ),
@@ -2187,17 +2111,15 @@ def test_078():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(0)),
-                            BinaryOp(Identifier("i"), "<", IntLiteral(3)),
-                            PrefixOp("++", Identifier("i")),
-                            BlockStmt(
-                                [ExprStmt(FuncCall("printInt", [Identifier("i")]))],
-                            ),
+                            VarDecl(IntType(), 'i', IntLiteral(0)),
+                            BinaryOp(Identifier('i'), '<', IntLiteral(3)),
+                            PrefixOp('++', Identifier('i')),
+                            BlockStmt([ExprStmt(FuncCall('printInt', [Identifier('i')]))]),
                         ),
                     ],
                 ),
@@ -2215,18 +2137,16 @@ def test_079():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "i", IntLiteral(0)),
+                        VarDecl(IntType(), 'i', IntLiteral(0)),
                         ForStmt(
-                            ExprStmt(AssignExpr(Identifier("i"), IntLiteral(2))),
-                            BinaryOp(Identifier("i"), "<=", IntLiteral(4)),
-                            PostfixOp("++", Identifier("i")),
-                            BlockStmt(
-                                [ExprStmt(FuncCall("printInt", [Identifier("i")]))],
-                            ),
+                            ExprStmt(AssignExpr(Identifier('i'), IntLiteral(2))),
+                            BinaryOp(Identifier('i'), '<=', IntLiteral(4)),
+                            PostfixOp('++', Identifier('i')),
+                            BlockStmt([ExprStmt(FuncCall('printInt', [Identifier('i')]))]),
                         ),
                     ],
                 ),
@@ -2244,21 +2164,21 @@ def test_080():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(0)),
-                            BinaryOp(Identifier("i"), "<", IntLiteral(4)),
-                            PostfixOp("++", Identifier("i")),
+                            VarDecl(IntType(), 'i', IntLiteral(0)),
+                            BinaryOp(Identifier('i'), '<', IntLiteral(4)),
+                            PostfixOp('++', Identifier('i')),
                             BlockStmt(
                                 [
                                     IfStmt(
-                                        BinaryOp(Identifier("i"), "==", IntLiteral(1)),
+                                        BinaryOp(Identifier('i'), '==', IntLiteral(1)),
                                         ContinueStmt(),
                                     ),
-                                    ExprStmt(FuncCall("printInt", [Identifier("i")])),
+                                    ExprStmt(FuncCall('printInt', [Identifier('i')])),
                                 ],
                             ),
                         ),
@@ -2278,21 +2198,21 @@ def test_081():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(0)),
-                            BinaryOp(Identifier("i"), "<", IntLiteral(6)),
-                            PostfixOp("++", Identifier("i")),
+                            VarDecl(IntType(), 'i', IntLiteral(0)),
+                            BinaryOp(Identifier('i'), '<', IntLiteral(6)),
+                            PostfixOp('++', Identifier('i')),
                             BlockStmt(
                                 [
                                     IfStmt(
-                                        BinaryOp(Identifier("i"), "==", IntLiteral(3)),
+                                        BinaryOp(Identifier('i'), '==', IntLiteral(3)),
                                         BreakStmt(),
                                     ),
-                                    ExprStmt(FuncCall("printInt", [Identifier("i")])),
+                                    ExprStmt(FuncCall('printInt', [Identifier('i')])),
                                 ],
                             ),
                         ),
@@ -2312,33 +2232,27 @@ def test_082():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(0)),
-                            BinaryOp(Identifier("i"), "<", IntLiteral(2)),
-                            PostfixOp("++", Identifier("i")),
+                            VarDecl(IntType(), 'i', IntLiteral(0)),
+                            BinaryOp(Identifier('i'), '<', IntLiteral(2)),
+                            PostfixOp('++', Identifier('i')),
                             BlockStmt(
                                 [
                                     ForStmt(
-                                        VarDecl(IntType(), "j", IntLiteral(0)),
-                                        BinaryOp(Identifier("j"), "<", IntLiteral(2)),
-                                        PostfixOp("++", Identifier("j")),
+                                        VarDecl(IntType(), 'j', IntLiteral(0)),
+                                        BinaryOp(Identifier('j'), '<', IntLiteral(2)),
+                                        PostfixOp('++', Identifier('j')),
                                         BlockStmt(
                                             [
                                                 ExprStmt(
-                                                    FuncCall(
-                                                        "printInt",
-                                                        [Identifier("i")],
-                                                    ),
+                                                    FuncCall('printInt', [Identifier('i')]),
                                                 ),
                                                 ExprStmt(
-                                                    FuncCall(
-                                                        "printInt",
-                                                        [Identifier("j")],
-                                                    ),
+                                                    FuncCall('printInt', [Identifier('j')]),
                                                 ),
                                             ],
                                         ),
@@ -2362,29 +2276,23 @@ def test_083():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(0)),
-                            BinaryOp(Identifier("i"), "<", IntLiteral(3)),
-                            PostfixOp("++", Identifier("i")),
+                            VarDecl(IntType(), 'i', IntLiteral(0)),
+                            BinaryOp(Identifier('i'), '<', IntLiteral(3)),
+                            PostfixOp('++', Identifier('i')),
                             BlockStmt(
                                 [
                                     IfStmt(
-                                        BinaryOp(Identifier("i"), "==", IntLiteral(1)),
+                                        BinaryOp(Identifier('i'), '==', IntLiteral(1)),
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("M")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('M')]),
                                         ),
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("N")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('N')]),
                                         ),
                                     ),
                                 ],
@@ -2406,37 +2314,27 @@ def test_084():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "i", IntLiteral(0)),
+                        VarDecl(IntType(), 'i', IntLiteral(0)),
                         WhileStmt(
-                            BinaryOp(Identifier("i"), "<", IntLiteral(5)),
+                            BinaryOp(Identifier('i'), '<', IntLiteral(5)),
                             BlockStmt(
                                 [
                                     IfStmt(
                                         BinaryOp(
-                                            BinaryOp(
-                                                Identifier("i"),
-                                                "%",
-                                                IntLiteral(2),
-                                            ),
-                                            "==",
+                                            BinaryOp(Identifier('i'), '%', IntLiteral(2)),
+                                            '==',
                                             IntLiteral(0),
                                         ),
-                                        ExprStmt(
-                                            FuncCall("printInt", [Identifier("i")]),
-                                        ),
+                                        ExprStmt(FuncCall('printInt', [Identifier('i')])),
                                     ),
                                     ExprStmt(
                                         AssignExpr(
-                                            Identifier("i"),
-                                            BinaryOp(
-                                                Identifier("i"),
-                                                "+",
-                                                IntLiteral(1),
-                                            ),
+                                            Identifier('i'),
+                                            BinaryOp(Identifier('i'), '+', IntLiteral(1)),
                                         ),
                                     ),
                                 ],
@@ -2458,31 +2356,27 @@ def test_085():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "s", IntLiteral(1)),
+                        VarDecl(IntType(), 's', IntLiteral(1)),
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(1)),
-                            BinaryOp(Identifier("i"), "<=", IntLiteral(3)),
-                            PostfixOp("++", Identifier("i")),
+                            VarDecl(IntType(), 'i', IntLiteral(1)),
+                            BinaryOp(Identifier('i'), '<=', IntLiteral(3)),
+                            PostfixOp('++', Identifier('i')),
                             BlockStmt(
                                 [
                                     ExprStmt(
                                         AssignExpr(
-                                            Identifier("s"),
-                                            BinaryOp(
-                                                Identifier("s"),
-                                                "*",
-                                                Identifier("i"),
-                                            ),
+                                            Identifier('s'),
+                                            BinaryOp(Identifier('s'), '*', Identifier('i')),
                                         ),
                                     ),
                                 ],
                             ),
                         ),
-                        ExprStmt(FuncCall("printInt", [Identifier("s")])),
+                        ExprStmt(FuncCall('printInt', [Identifier('s')])),
                     ],
                 ),
             ),
@@ -2497,12 +2391,12 @@ def test_086():
     """Generated test 86: function_no_param_int"""
     ast = Program(
         [
-            FuncDecl(IntType(), "value", [], BlockStmt([ReturnStmt(IntLiteral(9))])),
+            FuncDecl(IntType(), 'value', [], BlockStmt([ReturnStmt(IntLiteral(9))])),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printInt", [FuncCall("value", [])]))]),
+                BlockStmt([ExprStmt(FuncCall('printInt', [FuncCall('value', [])]))]),
             ),
         ],
     )
@@ -2517,21 +2411,21 @@ def test_087():
         [
             FuncDecl(
                 IntType(),
-                "add",
-                [Param(IntType(), "a"), Param(IntType(), "b")],
-                BlockStmt([ReturnStmt(BinaryOp(Identifier("a"), "+", Identifier("b")))]),
+                'add',
+                [Param(IntType(), 'a'), Param(IntType(), 'b')],
+                BlockStmt([ReturnStmt(BinaryOp(Identifier('a'), '+', Identifier('b')))]),
             ),
             FuncDecl(
                 IntType(),
-                "sum3",
-                [Param(IntType(), "a"), Param(IntType(), "b"), Param(IntType(), "c")],
+                'sum3',
+                [Param(IntType(), 'a'), Param(IntType(), 'b'), Param(IntType(), 'c')],
                 BlockStmt(
                     [
                         ReturnStmt(
                             BinaryOp(
-                                FuncCall("add", [Identifier("a"), Identifier("b")]),
-                                "+",
-                                Identifier("c"),
+                                FuncCall('add', [Identifier('a'), Identifier('b')]),
+                                '+',
+                                Identifier('c'),
                             ),
                         ),
                     ],
@@ -2539,16 +2433,16 @@ def test_087():
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     FuncCall(
-                                        "sum3",
+                                        'sum3',
                                         [IntLiteral(1), IntLiteral(2), IntLiteral(3)],
                                     ),
                                 ],
@@ -2570,16 +2464,11 @@ def test_088():
         [
             FuncDecl(
                 VoidType(),
-                "greet",
+                'greet',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printString", [StringLiteral("hi")]))]),
+                BlockStmt([ExprStmt(FuncCall('printString', [StringLiteral('hi')]))]),
             ),
-            FuncDecl(
-                VoidType(),
-                "main",
-                [],
-                BlockStmt([ExprStmt(FuncCall("greet", []))]),
-            ),
+            FuncDecl(VoidType(), 'main', [], BlockStmt([ExprStmt(FuncCall('greet', []))])),
         ],
     )
     expected = 'hi'
@@ -2593,21 +2482,21 @@ def test_089():
         [
             FuncDecl(
                 IntType(),
-                "calc",
+                'calc',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(4)),
-                        VarDecl(IntType(), "y", IntLiteral(5)),
-                        ReturnStmt(BinaryOp(Identifier("x"), "*", Identifier("y"))),
+                        VarDecl(IntType(), 'x', IntLiteral(4)),
+                        VarDecl(IntType(), 'y', IntLiteral(5)),
+                        ReturnStmt(BinaryOp(Identifier('x'), '*', Identifier('y'))),
                     ],
                 ),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printInt", [FuncCall("calc", [])]))]),
+                BlockStmt([ExprStmt(FuncCall('printInt', [FuncCall('calc', [])]))]),
             ),
         ],
     )
@@ -2622,23 +2511,23 @@ def test_090():
         [
             FuncDecl(
                 IntType(),
-                "inc",
-                [Param(IntType(), "x")],
-                BlockStmt([ReturnStmt(BinaryOp(Identifier("x"), "+", IntLiteral(1)))]),
+                'inc',
+                [Param(IntType(), 'x')],
+                BlockStmt([ReturnStmt(BinaryOp(Identifier('x'), '+', IntLiteral(1)))]),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     BinaryOp(
-                                        FuncCall("inc", [IntLiteral(4)]),
-                                        "+",
+                                        FuncCall('inc', [IntLiteral(4)]),
+                                        '+',
                                         IntLiteral(5),
                                     ),
                                 ],
@@ -2660,52 +2549,44 @@ def test_091():
         [
             FuncDecl(
                 IntType(),
-                "fact",
-                [Param(IntType(), "n")],
+                'fact',
+                [Param(IntType(), 'n')],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "acc", IntLiteral(1)),
+                        VarDecl(IntType(), 'acc', IntLiteral(1)),
                         WhileStmt(
-                            BinaryOp(Identifier("n"), ">", IntLiteral(1)),
+                            BinaryOp(Identifier('n'), '>', IntLiteral(1)),
                             BlockStmt(
                                 [
                                     ExprStmt(
                                         AssignExpr(
-                                            Identifier("acc"),
+                                            Identifier('acc'),
                                             BinaryOp(
-                                                Identifier("acc"),
-                                                "*",
-                                                Identifier("n"),
+                                                Identifier('acc'),
+                                                '*',
+                                                Identifier('n'),
                                             ),
                                         ),
                                     ),
                                     ExprStmt(
                                         AssignExpr(
-                                            Identifier("n"),
-                                            BinaryOp(
-                                                Identifier("n"),
-                                                "-",
-                                                IntLiteral(1),
-                                            ),
+                                            Identifier('n'),
+                                            BinaryOp(Identifier('n'), '-', IntLiteral(1)),
                                         ),
                                     ),
                                 ],
                             ),
                         ),
-                        ReturnStmt(Identifier("acc")),
+                        ReturnStmt(Identifier('acc')),
                     ],
                 ),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
-                    [
-                        ExprStmt(
-                            FuncCall("printInt", [FuncCall("fact", [IntLiteral(5)])]),
-                        ),
-                    ],
+                    [ExprStmt(FuncCall('printInt', [FuncCall('fact', [IntLiteral(5)])]))],
                 ),
             ),
         ],
@@ -2721,53 +2602,45 @@ def test_092():
         [
             FuncDecl(
                 IntType(),
-                "sumTo",
-                [Param(IntType(), "n")],
+                'sumTo',
+                [Param(IntType(), 'n')],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "acc", IntLiteral(0)),
-                        VarDecl(IntType(), "i", IntLiteral(1)),
+                        VarDecl(IntType(), 'acc', IntLiteral(0)),
+                        VarDecl(IntType(), 'i', IntLiteral(1)),
                         WhileStmt(
-                            BinaryOp(Identifier("i"), "<=", Identifier("n")),
+                            BinaryOp(Identifier('i'), '<=', Identifier('n')),
                             BlockStmt(
                                 [
                                     ExprStmt(
                                         AssignExpr(
-                                            Identifier("acc"),
+                                            Identifier('acc'),
                                             BinaryOp(
-                                                Identifier("acc"),
-                                                "+",
-                                                Identifier("i"),
+                                                Identifier('acc'),
+                                                '+',
+                                                Identifier('i'),
                                             ),
                                         ),
                                     ),
                                     ExprStmt(
                                         AssignExpr(
-                                            Identifier("i"),
-                                            BinaryOp(
-                                                Identifier("i"),
-                                                "+",
-                                                IntLiteral(1),
-                                            ),
+                                            Identifier('i'),
+                                            BinaryOp(Identifier('i'), '+', IntLiteral(1)),
                                         ),
                                     ),
                                 ],
                             ),
                         ),
-                        ReturnStmt(Identifier("acc")),
+                        ReturnStmt(Identifier('acc')),
                     ],
                 ),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
-                    [
-                        ExprStmt(
-                            FuncCall("printInt", [FuncCall("sumTo", [IntLiteral(6)])]),
-                        ),
-                    ],
+                    [ExprStmt(FuncCall('printInt', [FuncCall('sumTo', [IntLiteral(6)])]))],
                 ),
             ),
         ],
@@ -2783,15 +2656,15 @@ def test_093():
         [
             FuncDecl(
                 StringType(),
-                "word",
+                'word',
                 [],
-                BlockStmt([ReturnStmt(StringLiteral("TyC"))]),
+                BlockStmt([ReturnStmt(StringLiteral('TyC'))]),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printString", [FuncCall("word", [])]))]),
+                BlockStmt([ExprStmt(FuncCall('printString', [FuncCall('word', [])]))]),
             ),
         ],
     )
@@ -2806,15 +2679,15 @@ def test_094():
         [
             FuncDecl(
                 VoidType(),
-                "echo",
-                [Param(StringType(), "s")],
-                BlockStmt([ExprStmt(FuncCall("printString", [Identifier("s")]))]),
+                'echo',
+                [Param(StringType(), 's')],
+                BlockStmt([ExprStmt(FuncCall('printString', [Identifier('s')]))]),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("echo", [StringLiteral("compiler")]))]),
+                BlockStmt([ExprStmt(FuncCall('echo', [StringLiteral('compiler')]))]),
             ),
         ],
     )
@@ -2829,32 +2702,28 @@ def test_095():
         [
             FuncDecl(
                 IntType(),
-                "square",
-                [Param(IntType(), "x")],
-                BlockStmt([ReturnStmt(BinaryOp(Identifier("x"), "*", Identifier("x")))]),
+                'square',
+                [Param(IntType(), 'x')],
+                BlockStmt([ReturnStmt(BinaryOp(Identifier('x'), '*', Identifier('x')))]),
             ),
             FuncDecl(
                 IntType(),
-                "quad",
-                [Param(IntType(), "x")],
+                'quad',
+                [Param(IntType(), 'x')],
                 BlockStmt(
                     [
                         ReturnStmt(
-                            FuncCall("square", [FuncCall("square", [Identifier("x")])]),
+                            FuncCall('square', [FuncCall('square', [Identifier('x')])]),
                         ),
                     ],
                 ),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
-                    [
-                        ExprStmt(
-                            FuncCall("printInt", [FuncCall("quad", [IntLiteral(2)])]),
-                        ),
-                    ],
+                    [ExprStmt(FuncCall('printInt', [FuncCall('quad', [IntLiteral(2)])]))],
                 ),
             ),
         ],
@@ -2870,17 +2739,15 @@ def test_096():
         [
             FuncDecl(
                 VoidType(),
-                "bang",
+                'bang',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printString", [StringLiteral("!")]))]),
+                BlockStmt([ExprStmt(FuncCall('printString', [StringLiteral('!')]))]),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt(
-                    [ExprStmt(FuncCall("bang", [])), ExprStmt(FuncCall("bang", []))],
-                ),
+                BlockStmt([ExprStmt(FuncCall('bang', [])), ExprStmt(FuncCall('bang', []))]),
             ),
         ],
     )
@@ -2895,32 +2762,28 @@ def test_097():
         [
             FuncDecl(
                 IntType(),
-                "sign",
-                [Param(IntType(), "x")],
+                'sign',
+                [Param(IntType(), 'x')],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "out", IntLiteral(0)),
+                        VarDecl(IntType(), 'out', IntLiteral(0)),
                         IfStmt(
-                            BinaryOp(Identifier("x"), ">", IntLiteral(0)),
-                            ExprStmt(AssignExpr(Identifier("out"), IntLiteral(1))),
-                            ExprStmt(AssignExpr(Identifier("out"), IntLiteral(0))),
+                            BinaryOp(Identifier('x'), '>', IntLiteral(0)),
+                            ExprStmt(AssignExpr(Identifier('out'), IntLiteral(1))),
+                            ExprStmt(AssignExpr(Identifier('out'), IntLiteral(0))),
                         ),
-                        ReturnStmt(Identifier("out")),
+                        ReturnStmt(Identifier('out')),
                     ],
                 ),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        ExprStmt(
-                            FuncCall("printInt", [FuncCall("sign", [IntLiteral(3)])]),
-                        ),
-                        ExprStmt(
-                            FuncCall("printInt", [FuncCall("sign", [IntLiteral(0)])]),
-                        ),
+                        ExprStmt(FuncCall('printInt', [FuncCall('sign', [IntLiteral(3)])])),
+                        ExprStmt(FuncCall('printInt', [FuncCall('sign', [IntLiteral(0)])])),
                     ],
                 ),
             ),
@@ -2937,26 +2800,26 @@ def test_098():
         [
             FuncDecl(
                 IntType(),
-                "inc",
-                [Param(IntType(), "x")],
-                BlockStmt([ReturnStmt(BinaryOp(Identifier("x"), "+", IntLiteral(1)))]),
+                'inc',
+                [Param(IntType(), 'x')],
+                BlockStmt([ReturnStmt(BinaryOp(Identifier('x'), '+', IntLiteral(1)))]),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(0)),
-                            BinaryOp(Identifier("i"), "<", IntLiteral(3)),
-                            PostfixOp("++", Identifier("i")),
+                            VarDecl(IntType(), 'i', IntLiteral(0)),
+                            BinaryOp(Identifier('i'), '<', IntLiteral(3)),
+                            PostfixOp('++', Identifier('i')),
                             BlockStmt(
                                 [
                                     ExprStmt(
                                         FuncCall(
-                                            "printInt",
-                                            [FuncCall("inc", [Identifier("i")])],
+                                            'printInt',
+                                            [FuncCall('inc', [Identifier('i')])],
                                         ),
                                     ),
                                 ],
@@ -2978,20 +2841,20 @@ def test_099():
         [
             FuncDecl(
                 IntType(),
-                "setfive",
+                'setfive',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(0)),
-                        ReturnStmt(AssignExpr(Identifier("x"), IntLiteral(5))),
+                        VarDecl(IntType(), 'x', IntLiteral(0)),
+                        ReturnStmt(AssignExpr(Identifier('x'), IntLiteral(5))),
                     ],
                 ),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printInt", [FuncCall("setfive", [])]))]),
+                BlockStmt([ExprStmt(FuncCall('printInt', [FuncCall('setfive', [])]))]),
             ),
         ],
     )
@@ -3004,24 +2867,19 @@ def test_100():
     """Generated test 100: struct_init_print_x"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "p",
+                            StructType('Point'),
+                            'p',
                             StructLiteral([IntLiteral(1), IntLiteral(2)]),
                         ),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p"), "x")]),
-                        ),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('p'), 'x')])),
                     ],
                 ),
             ),
@@ -3036,24 +2894,19 @@ def test_101():
     """Generated test 101: struct_init_print_y"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "p",
+                            StructType('Point'),
+                            'p',
                             StructLiteral([IntLiteral(1), IntLiteral(7)]),
                         ),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p"), "y")]),
-                        ),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('p'), 'y')])),
                     ],
                 ),
             ),
@@ -3068,30 +2921,22 @@ def test_102():
     """Generated test 102: struct_field_update_x"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "p",
+                            StructType('Point'),
+                            'p',
                             StructLiteral([IntLiteral(1), IntLiteral(2)]),
                         ),
                         ExprStmt(
-                            AssignExpr(
-                                MemberAccess(Identifier("p"), "x"),
-                                IntLiteral(5),
-                            ),
+                            AssignExpr(MemberAccess(Identifier('p'), 'x'), IntLiteral(5)),
                         ),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p"), "x")]),
-                        ),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('p'), 'x')])),
                     ],
                 ),
             ),
@@ -3106,30 +2951,22 @@ def test_103():
     """Generated test 103: struct_field_update_y"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "p",
+                            StructType('Point'),
+                            'p',
                             StructLiteral([IntLiteral(3), IntLiteral(4)]),
                         ),
                         ExprStmt(
-                            AssignExpr(
-                                MemberAccess(Identifier("p"), "y"),
-                                IntLiteral(8),
-                            ),
+                            AssignExpr(MemberAccess(Identifier('p'), 'y'), IntLiteral(8)),
                         ),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p"), "y")]),
-                        ),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('p'), 'y')])),
                     ],
                 ),
             ),
@@ -3144,29 +2981,22 @@ def test_104():
     """Generated test 104: struct_assignment_then_read"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "a",
+                            StructType('Point'),
+                            'a',
                             StructLiteral([IntLiteral(9), IntLiteral(6)]),
                         ),
-                        VarDecl(StructType("Point"), "b"),
-                        ExprStmt(AssignExpr(Identifier("b"), Identifier("a"))),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("b"), "x")]),
-                        ),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("b"), "y")]),
-                        ),
+                        VarDecl(StructType('Point'), 'b'),
+                        ExprStmt(AssignExpr(Identifier('b'), Identifier('a'))),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('b'), 'x')])),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('b'), 'y')])),
                     ],
                 ),
             ),
@@ -3181,26 +3011,21 @@ def test_105():
     """Generated test 105: struct_literal_assigned_later"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(StructType("Point"), "p"),
+                        VarDecl(StructType('Point'), 'p'),
                         ExprStmt(
                             AssignExpr(
-                                Identifier("p"),
+                                Identifier('p'),
                                 StructLiteral([IntLiteral(2), IntLiteral(5)]),
                             ),
                         ),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p"), "x")]),
-                        ),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('p'), 'x')])),
                     ],
                 ),
             ),
@@ -3215,35 +3040,30 @@ def test_106():
     """Generated test 106: struct_member_assignment_expr_result"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "p",
+                            StructType('Point'),
+                            'p',
                             StructLiteral([IntLiteral(0), IntLiteral(0)]),
                         ),
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     AssignExpr(
-                                        MemberAccess(Identifier("p"), "x"),
+                                        MemberAccess(Identifier('p'), 'x'),
                                         IntLiteral(7),
                                     ),
                                 ],
                             ),
                         ),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p"), "x")]),
-                        ),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('p'), 'x')])),
                     ],
                 ),
             ),
@@ -3258,29 +3078,26 @@ def test_107():
     """Generated test 107: function_takes_struct_param"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 IntType(),
-                "getx",
-                [Param(StructType("Point"), "p")],
-                BlockStmt([ReturnStmt(MemberAccess(Identifier("p"), "x"))]),
+                'getx',
+                [Param(StructType('Point'), 'p')],
+                BlockStmt([ReturnStmt(MemberAccess(Identifier('p'), 'x'))]),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "p",
+                            StructType('Point'),
+                            'p',
                             StructLiteral([IntLiteral(4), IntLiteral(9)]),
                         ),
                         ExprStmt(
-                            FuncCall("printInt", [FuncCall("getx", [Identifier("p")])]),
+                            FuncCall('printInt', [FuncCall('getx', [Identifier('p')])]),
                         ),
                     ],
                 ),
@@ -3296,36 +3113,30 @@ def test_108():
     """Generated test 108: function_returns_struct"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
-                StructType("Point"),
-                "make",
+                StructType('Point'),
+                'make',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "p",
+                            StructType('Point'),
+                            'p',
                             StructLiteral([IntLiteral(3), IntLiteral(8)]),
                         ),
-                        ReturnStmt(Identifier("p")),
+                        ReturnStmt(Identifier('p')),
                     ],
                 ),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         ExprStmt(
-                            FuncCall(
-                                "printInt",
-                                [MemberAccess(FuncCall("make", []), "y")],
-                            ),
+                            FuncCall('printInt', [MemberAccess(FuncCall('make', []), 'y')]),
                         ),
                     ],
                 ),
@@ -3341,36 +3152,28 @@ def test_109():
     """Generated test 109: struct_field_passed_to_function"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 IntType(),
-                "twice",
-                [Param(IntType(), "x")],
-                BlockStmt([ReturnStmt(BinaryOp(Identifier("x"), "+", Identifier("x")))]),
+                'twice',
+                [Param(IntType(), 'x')],
+                BlockStmt([ReturnStmt(BinaryOp(Identifier('x'), '+', Identifier('x')))]),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "p",
+                            StructType('Point'),
+                            'p',
                             StructLiteral([IntLiteral(2), IntLiteral(6)]),
                         ),
                         ExprStmt(
                             FuncCall(
-                                "printInt",
-                                [
-                                    FuncCall(
-                                        "twice",
-                                        [MemberAccess(Identifier("p"), "y")],
-                                    ),
-                                ],
+                                'printInt',
+                                [FuncCall('twice', [MemberAccess(Identifier('p'), 'y')])],
                             ),
                         ),
                     ],
@@ -3387,28 +3190,21 @@ def test_110():
     """Generated test 110: two_struct_types_in_program"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
-            StructDecl("Pair", [MemberDecl(IntType(), "a"), MemberDecl(IntType(), "b")]),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
+            StructDecl('Pair', [MemberDecl(IntType(), 'a'), MemberDecl(IntType(), 'b')]),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Pair"),
-                            "p",
+                            StructType('Pair'),
+                            'p',
                             StructLiteral([IntLiteral(7), IntLiteral(1)]),
                         ),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p"), "a")]),
-                        ),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p"), "b")]),
-                        ),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('p'), 'a')])),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('p'), 'b')])),
                     ],
                 ),
             ),
@@ -3423,29 +3219,26 @@ def test_111():
     """Generated test 111: struct_field_used_in_arithmetic"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "p",
+                            StructType('Point'),
+                            'p',
                             StructLiteral([IntLiteral(4), IntLiteral(5)]),
                         ),
                         ExprStmt(
                             FuncCall(
-                                "printInt",
+                                'printInt',
                                 [
                                     BinaryOp(
-                                        MemberAccess(Identifier("p"), "x"),
-                                        "+",
-                                        MemberAccess(Identifier("p"), "y"),
+                                        MemberAccess(Identifier('p'), 'x'),
+                                        '+',
+                                        MemberAccess(Identifier('p'), 'y'),
                                     ),
                                 ],
                             ),
@@ -3464,36 +3257,31 @@ def test_112():
     """Generated test 112: struct_returned_then_assigned"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
-                StructType("Point"),
-                "mk",
+                StructType('Point'),
+                'mk',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "tmp",
+                            StructType('Point'),
+                            'tmp',
                             StructLiteral([IntLiteral(8), IntLiteral(6)]),
                         ),
-                        ReturnStmt(Identifier("tmp")),
+                        ReturnStmt(Identifier('tmp')),
                     ],
                 ),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(StructType("Point"), "p"),
-                        ExprStmt(AssignExpr(Identifier("p"), FuncCall("mk", []))),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p"), "x")]),
-                        ),
+                        VarDecl(StructType('Point'), 'p'),
+                        ExprStmt(AssignExpr(Identifier('p'), FuncCall('mk', []))),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('p'), 'x')])),
                     ],
                 ),
             ),
@@ -3508,39 +3296,29 @@ def test_113():
     """Generated test 113: struct_reassign_multiple_times"""
     ast = Program(
         [
-            StructDecl(
-                "Point",
-                [MemberDecl(IntType(), "x"), MemberDecl(IntType(), "y")],
-            ),
+            StructDecl('Point', [MemberDecl(IntType(), 'x'), MemberDecl(IntType(), 'y')]),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         VarDecl(
-                            StructType("Point"),
-                            "p",
+                            StructType('Point'),
+                            'p',
                             StructLiteral([IntLiteral(1), IntLiteral(1)]),
                         ),
                         ExprStmt(
                             AssignExpr(
-                                Identifier("p"),
+                                Identifier('p'),
                                 StructLiteral([IntLiteral(3), IntLiteral(4)]),
                             ),
                         ),
                         ExprStmt(
-                            AssignExpr(
-                                MemberAccess(Identifier("p"), "x"),
-                                IntLiteral(8),
-                            ),
+                            AssignExpr(MemberAccess(Identifier('p'), 'x'), IntLiteral(8)),
                         ),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p"), "x")]),
-                        ),
-                        ExprStmt(
-                            FuncCall("printInt", [MemberAccess(Identifier("p"), "y")]),
-                        ),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('p'), 'x')])),
+                        ExprStmt(FuncCall('printInt', [MemberAccess(Identifier('p'), 'y')])),
                     ],
                 ),
             ),
@@ -3557,22 +3335,19 @@ def test_114():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(1)),
+                        VarDecl(IntType(), 'x', IntLiteral(1)),
                         SwitchStmt(
-                            Identifier("x"),
+                            Identifier('x'),
                             [
                                 CaseStmt(
                                     IntLiteral(1),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("one")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('one')]),
                                         ),
                                         BreakStmt(),
                                     ],
@@ -3581,10 +3356,7 @@ def test_114():
                                     IntLiteral(2),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("two")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('two')]),
                                         ),
                                         BreakStmt(),
                                     ],
@@ -3607,22 +3379,19 @@ def test_115():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(9)),
+                        VarDecl(IntType(), 'x', IntLiteral(9)),
                         SwitchStmt(
-                            Identifier("x"),
+                            Identifier('x'),
                             [
                                 CaseStmt(
                                     IntLiteral(1),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("one")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('one')]),
                                         ),
                                         BreakStmt(),
                                     ],
@@ -3631,10 +3400,7 @@ def test_115():
                             DefaultStmt(
                                 [
                                     ExprStmt(
-                                        FuncCall(
-                                            "printString",
-                                            [StringLiteral("other")],
-                                        ),
+                                        FuncCall('printString', [StringLiteral('other')]),
                                     ),
                                 ],
                             ),
@@ -3655,22 +3421,19 @@ def test_116():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(9)),
+                        VarDecl(IntType(), 'x', IntLiteral(9)),
                         SwitchStmt(
-                            Identifier("x"),
+                            Identifier('x'),
                             [
                                 CaseStmt(
                                     IntLiteral(1),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("one")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('one')]),
                                         ),
                                         BreakStmt(),
                                     ],
@@ -3693,32 +3456,32 @@ def test_117():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(3)),
+                        VarDecl(IntType(), 'x', IntLiteral(3)),
                         SwitchStmt(
-                            Identifier("x"),
+                            Identifier('x'),
                             [
                                 CaseStmt(
                                     IntLiteral(1),
                                     [
-                                        ExprStmt(FuncCall("printInt", [IntLiteral(1)])),
+                                        ExprStmt(FuncCall('printInt', [IntLiteral(1)])),
                                         BreakStmt(),
                                     ],
                                 ),
                                 CaseStmt(
                                     IntLiteral(2),
                                     [
-                                        ExprStmt(FuncCall("printInt", [IntLiteral(2)])),
+                                        ExprStmt(FuncCall('printInt', [IntLiteral(2)])),
                                         BreakStmt(),
                                     ],
                                 ),
                                 CaseStmt(
                                     IntLiteral(3),
                                     [
-                                        ExprStmt(FuncCall("printInt", [IntLiteral(3)])),
+                                        ExprStmt(FuncCall('printInt', [IntLiteral(3)])),
                                         BreakStmt(),
                                     ],
                                 ),
@@ -3740,22 +3503,19 @@ def test_118():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(1)),
+                        VarDecl(IntType(), 'x', IntLiteral(1)),
                         SwitchStmt(
-                            Identifier("x"),
+                            Identifier('x'),
                             [
                                 CaseStmt(
                                     IntLiteral(1),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("A")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('A')]),
                                         ),
                                     ],
                                 ),
@@ -3763,10 +3523,7 @@ def test_118():
                                     IntLiteral(2),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("B")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('B')]),
                                         ),
                                         BreakStmt(),
                                     ],
@@ -3789,28 +3546,22 @@ def test_119():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(2)),
+                        VarDecl(IntType(), 'x', IntLiteral(2)),
                         SwitchStmt(
-                            Identifier("x"),
+                            Identifier('x'),
                             [
                                 CaseStmt(
                                     IntLiteral(2),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("x")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('x')]),
                                         ),
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("y")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('y')]),
                                         ),
                                         BreakStmt(),
                                     ],
@@ -3833,34 +3584,27 @@ def test_120():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "a", IntLiteral(1)),
-                        VarDecl(IntType(), "b", IntLiteral(2)),
+                        VarDecl(IntType(), 'a', IntLiteral(1)),
+                        VarDecl(IntType(), 'b', IntLiteral(2)),
                         SwitchStmt(
-                            BinaryOp(Identifier("a"), "+", Identifier("b")),
+                            BinaryOp(Identifier('a'), '+', Identifier('b')),
                             [
                                 CaseStmt(
                                     IntLiteral(3),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("sum3")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('sum3')]),
                                         ),
                                         BreakStmt(),
                                     ],
                                 ),
                             ],
                             DefaultStmt(
-                                [
-                                    ExprStmt(
-                                        FuncCall("printString", [StringLiteral("bad")]),
-                                    ),
-                                ],
+                                [ExprStmt(FuncCall('printString', [StringLiteral('bad')]))],
                             ),
                         ),
                     ],
@@ -3879,32 +3623,25 @@ def test_121():
         [
             FuncDecl(
                 VoidType(),
-                "show",
-                [Param(IntType(), "x")],
+                'show',
+                [Param(IntType(), 'x')],
                 BlockStmt(
                     [
                         SwitchStmt(
-                            Identifier("x"),
+                            Identifier('x'),
                             [
                                 CaseStmt(
                                     IntLiteral(4),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("hit")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('hit')]),
                                         ),
                                         BreakStmt(),
                                     ],
                                 ),
                             ],
                             DefaultStmt(
-                                [
-                                    ExprStmt(
-                                        FuncCall("printString", [StringLiteral("miss")]),
-                                    ),
-                                ],
+                                [ExprStmt(FuncCall('printString', [StringLiteral('miss')]))],
                             ),
                         ),
                     ],
@@ -3912,9 +3649,9 @@ def test_121():
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("show", [IntLiteral(4)]))]),
+                BlockStmt([ExprStmt(FuncCall('show', [IntLiteral(4)]))]),
             ),
         ],
     )
@@ -3929,22 +3666,19 @@ def test_122():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(2)),
+                        VarDecl(IntType(), 'x', IntLiteral(2)),
                         SwitchStmt(
-                            Identifier("x"),
+                            Identifier('x'),
                             [
                                 CaseStmt(
                                     IntLiteral(1),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("A")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('A')]),
                                         ),
                                     ],
                                 ),
@@ -3952,20 +3686,13 @@ def test_122():
                                     IntLiteral(2),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("B")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('B')]),
                                         ),
                                     ],
                                 ),
                             ],
                             DefaultStmt(
-                                [
-                                    ExprStmt(
-                                        FuncCall("printString", [StringLiteral("C")]),
-                                    ),
-                                ],
+                                [ExprStmt(FuncCall('printString', [StringLiteral('C')]))],
                             ),
                         ),
                     ],
@@ -3984,22 +3711,19 @@ def test_123():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(IntType(), "x", IntLiteral(2)),
+                        VarDecl(IntType(), 'x', IntLiteral(2)),
                         SwitchStmt(
-                            Identifier("x"),
+                            Identifier('x'),
                             [
                                 CaseStmt(
                                     IntLiteral(1),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("A")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('A')]),
                                         ),
                                         BreakStmt(),
                                     ],
@@ -4008,10 +3732,7 @@ def test_123():
                                     IntLiteral(2),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("B")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('B')]),
                                         ),
                                         BreakStmt(),
                                     ],
@@ -4020,21 +3741,14 @@ def test_123():
                                     IntLiteral(3),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("C")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('C')]),
                                         ),
                                         BreakStmt(),
                                     ],
                                 ),
                             ],
                             DefaultStmt(
-                                [
-                                    ExprStmt(
-                                        FuncCall("printString", [StringLiteral("D")]),
-                                    ),
-                                ],
+                                [ExprStmt(FuncCall('printString', [StringLiteral('D')]))],
                             ),
                         ),
                     ],
@@ -4053,9 +3767,9 @@ def test_124():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printString", [StringLiteral("")]))]),
+                BlockStmt([ExprStmt(FuncCall('printString', [StringLiteral('')]))]),
             ),
         ],
     )
@@ -4070,9 +3784,9 @@ def test_125():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printString", [StringLiteral("TyC")]))]),
+                BlockStmt([ExprStmt(FuncCall('printString', [StringLiteral('TyC')]))]),
             ),
         ],
     )
@@ -4087,12 +3801,12 @@ def test_126():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(StringType(), "s", StringLiteral("hello")),
-                        ExprStmt(FuncCall("printString", [Identifier("s")])),
+                        VarDecl(StringType(), 's', StringLiteral('hello')),
+                        ExprStmt(FuncCall('printString', [Identifier('s')])),
                     ],
                 ),
             ),
@@ -4109,13 +3823,13 @@ def test_127():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        VarDecl(StringType(), "s", StringLiteral("a")),
-                        ExprStmt(AssignExpr(Identifier("s"), StringLiteral("b"))),
-                        ExprStmt(FuncCall("printString", [Identifier("s")])),
+                        VarDecl(StringType(), 's', StringLiteral('a')),
+                        ExprStmt(AssignExpr(Identifier('s'), StringLiteral('b'))),
+                        ExprStmt(FuncCall('printString', [Identifier('s')])),
                     ],
                 ),
             ),
@@ -4132,12 +3846,12 @@ def test_128():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        ExprStmt(FuncCall("printString", [StringLiteral("A")])),
-                        ExprStmt(FuncCall("printString", [StringLiteral("B")])),
+                        ExprStmt(FuncCall('printString', [StringLiteral('A')])),
+                        ExprStmt(FuncCall('printString', [StringLiteral('B')])),
                     ],
                 ),
             ),
@@ -4154,14 +3868,14 @@ def test_129():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
                         IfStmt(
                             IntLiteral(1),
-                            ExprStmt(FuncCall("printString", [StringLiteral("yes")])),
-                            ExprStmt(FuncCall("printString", [StringLiteral("no")])),
+                            ExprStmt(FuncCall('printString', [StringLiteral('yes')])),
+                            ExprStmt(FuncCall('printString', [StringLiteral('no')])),
                         ),
                     ],
                 ),
@@ -4179,15 +3893,15 @@ def test_130():
         [
             FuncDecl(
                 StringType(),
-                "get",
+                'get',
                 [],
-                BlockStmt([ReturnStmt(StringLiteral("done"))]),
+                BlockStmt([ReturnStmt(StringLiteral('done'))]),
             ),
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printString", [FuncCall("get", [])]))]),
+                BlockStmt([ExprStmt(FuncCall('printString', [FuncCall('get', [])]))]),
             ),
         ],
     )
@@ -4202,12 +3916,12 @@ def test_131():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        ExprStmt(FuncCall("printString", [StringLiteral("n=")])),
-                        ExprStmt(FuncCall("printInt", [IntLiteral(7)])),
+                        ExprStmt(FuncCall('printString', [StringLiteral('n=')])),
+                        ExprStmt(FuncCall('printInt', [IntLiteral(7)])),
                     ],
                 ),
             ),
@@ -4224,9 +3938,9 @@ def test_132():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt([ExprStmt(FuncCall("printString", [StringLiteral("a\\tb")]))]),
+                BlockStmt([ExprStmt(FuncCall('printString', [StringLiteral('a\\tb')]))]),
             ),
         ],
     )
@@ -4241,11 +3955,9 @@ def test_133():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
-                BlockStmt(
-                    [ExprStmt(FuncCall("printString", [StringLiteral("say \"hi\"")]))],
-                ),
+                BlockStmt([ExprStmt(FuncCall('printString', [StringLiteral('say "hi"')]))]),
             ),
         ],
     )
@@ -4260,23 +3972,20 @@ def test_134():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        ExprStmt(FuncCall("printString", [StringLiteral("mode:")])),
-                        VarDecl(IntType(), "x", IntLiteral(1)),
+                        ExprStmt(FuncCall('printString', [StringLiteral('mode:')])),
+                        VarDecl(IntType(), 'x', IntLiteral(1)),
                         SwitchStmt(
-                            Identifier("x"),
+                            Identifier('x'),
                             [
                                 CaseStmt(
                                     IntLiteral(1),
                                     [
                                         ExprStmt(
-                                            FuncCall(
-                                                "printString",
-                                                [StringLiteral("on")],
-                                            ),
+                                            FuncCall('printString', [StringLiteral('on')]),
                                         ),
                                         BreakStmt(),
                                     ],
@@ -4299,18 +4008,16 @@ def test_135():
         [
             FuncDecl(
                 VoidType(),
-                "main",
+                'main',
                 [],
                 BlockStmt(
                     [
-                        ExprStmt(FuncCall("printString", [StringLiteral("v")])),
+                        ExprStmt(FuncCall('printString', [StringLiteral('v')])),
                         ForStmt(
-                            VarDecl(IntType(), "i", IntLiteral(1)),
-                            BinaryOp(Identifier("i"), "<=", IntLiteral(3)),
-                            PostfixOp("++", Identifier("i")),
-                            BlockStmt(
-                                [ExprStmt(FuncCall("printInt", [Identifier("i")]))],
-                            ),
+                            VarDecl(IntType(), 'i', IntLiteral(1)),
+                            BinaryOp(Identifier('i'), '<=', IntLiteral(3)),
+                            PostfixOp('++', Identifier('i')),
+                            BlockStmt([ExprStmt(FuncCall('printInt', [Identifier('i')]))]),
                         ),
                     ],
                 ),
